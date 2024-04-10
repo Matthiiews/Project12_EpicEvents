@@ -19,19 +19,19 @@ class Contract(models.Model):
     STATE_CHOICES = {SIGNED: _("Signed"), DRAFT: _("Draft")}
 
     client = models.ForeignKey("accounts.Client", on_delete=models.CASCADE,
-                               related_name="Contract_clients",
-                               verbose_name=_("Client of contract"))
+                               related_name="contract_clients",
+                               verbose_name=_("client of contract"))
     employee = models.ForeignKey("accounts.Employee", on_delete=models.CASCADE,
-                                 related_name="Contract_employees",
-                                 verbose_name=_("Employee of contract"))
+                                 related_name="contract_employees",
+                                 verbose_name=_("employee of contract"))
     total_costs = models.DecimalField(max_digits=9, decimal_places=2,
                                       verbose_name=_(
-                                          "Total costs of contract"))
+                                          "total costs of contract"))
     amount_paid = models.DecimalField(max_digits=9, decimal_places=2,
                                       verbose_name=_(
-                                          "Paid amount of contract"))
+                                          "paid amount of contract"))
     create_date = models.DateTimeField(auto_now_add=True,
-                                       verbose_name=_("Contract create on"))
+                                       verbose_name=_("contract create on"))
     state = models.CharField(max_length=1, choices=STATE_CHOICES,
                              default=DRAFT, verbose_name=_("state"))
 

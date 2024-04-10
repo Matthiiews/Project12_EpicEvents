@@ -136,7 +136,7 @@ class Client(models.Model):
         max_length=254, unique=True, verbose_name=_("email address"))
     first_name = models.CharField(max_length=100, verbose_name=_("first name"))
     last_name = models.CharField(max_length=100, verbose_name=_("last name"))
-    phone = models.CharField(max_length=17, verbose_name=_("Phone number"))
+    phone = models.CharField(max_length=17, verbose_name=_("phone number"))
     created_on = models.DateTimeField(
         auto_now_add=True, verbose_name=_("create on"))
     last_update = models.DateTimeField(

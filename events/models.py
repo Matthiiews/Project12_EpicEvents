@@ -11,7 +11,7 @@ class Event(models.Model):
     employee, date, name, location, max_guests, and notes.
     """
 
-    contract = models.ForeignKey("accounts.Contract", on_delete=models.CASCADE,
+    contract = models.ForeignKey("contracts.Contract", on_delete=models.CASCADE,
                                  related_name="event_contract",
                                  verbose_name=_("contract for event"))
     employee = models.ForeignKey("accounts.Employee", on_delete=models.CASCADE,
