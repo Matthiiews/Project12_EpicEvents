@@ -7,6 +7,8 @@ name = "pypi"
 django = "*"
 sqlalchemy = "*"
 psycopg2-binary = "*"
+tabulate = "*"
+pyjwt = "*"
 
 [dev-packages]
 
