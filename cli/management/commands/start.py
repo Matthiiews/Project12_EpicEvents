@@ -11,6 +11,7 @@ class Command(EpicEventsCommand):
     `EpicEventsCommand`. It provides the
     start menu for choosing which model to go to next.
     """
+    
     help = "Start the Epic Events program."
     Permissions = ["SA", "SU", "MA"]
 
