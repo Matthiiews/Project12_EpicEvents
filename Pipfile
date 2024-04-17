@@ -9,6 +9,9 @@ sqlalchemy = "*"
 psycopg2-binary = "*"
 tabulate = "*"
 pyjwt = "*"
+black = "*"
+django-extensions = "*"
+decorator = "*"
 
 [dev-packages]
 
