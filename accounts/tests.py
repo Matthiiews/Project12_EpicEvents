@@ -113,7 +113,8 @@ class ClientTestCase(ModelTestCase):
     def test_client_creation_successful(self):
         self.assertEqual(self.custom_client.first_name, self.CLIENT_FIRST_NAME)
         self.assertEqual(self.custom_client.last_name, self.CLIENT_LAST_NAME)
-        self.assertEqual(self.custom_client.employee.user.email, self.USER_EMAIL)
+        self.assertEqual(
+            self.custom_client.employee.user.email, self.USER_EMAIL)
 
     def test_client_full_name(self):
         self.assertEqual(
