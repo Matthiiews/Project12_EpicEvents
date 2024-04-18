@@ -12,6 +12,14 @@ pyjwt = "*"
 black = "*"
 django-extensions = "*"
 decorator = "*"
+faker = "*"
+matplotlib-inline = "*"
+yarl = "*"
+python-dateutil = "*"
+sentry-sdk = "*"
+asttokens = "*"
+ipython = "*"
+jedi = "*"
 
 [dev-packages]
 
