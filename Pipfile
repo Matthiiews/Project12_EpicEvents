@@ -20,6 +20,14 @@ sentry-sdk = "*"
 asttokens = "*"
 ipython = "*"
 jedi = "*"
+aiohttp = "*"
+aiosignal = "*"
+attrs = "*"
+coverage = "*"
+frozenlist = "*"
+pathspec = "*"
+pexpect = "*"
+platformdirs = "*"
 
 [dev-packages]
 
