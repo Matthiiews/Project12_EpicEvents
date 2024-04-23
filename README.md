@@ -1,8 +1,8 @@
-OC-P12 : EPICEVENT - Développez une architecture back-end sécurisée avec Python et SQL
+# OC-P12 : EPICEVENT - Développez une architecture back-end sécurisée avec Python et SQL
 
 <p align="center">
-  <img src="IMG/logo_light.png#gh-light-mode-only" alt="logo-light" />
-  <img src="IMG/logo_dark.png#gh-dark-mode-only" alt="logo-dark" />
+  ![logo-light](IMG/logo_light.png#gh-light-mode-only)
+  ![logo-dark](IMG/logo_dark.png#gh-dark-mode-only)
 </p>
 
 ![logo](IMG/Logo_EpicEvents.png)
@@ -91,7 +91,7 @@ the commands to create all these data is located in `data/management/commands/`.
 
 ## Entity-Relationship Diagram (ERD)
 
-realized with https://dbdiagram.io
+realized with [Visitez](https://dbdiagram.io)
 
 ![diagram](/README_images/EpicEvents_modelDiagramm.png)
 
