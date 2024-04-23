@@ -18,7 +18,7 @@ class Command(EpicEventsCommand):
     permissions = ["SA", "SU", "MA"]
 
     def get_queryset(self):
-        self.queryset = (Employee.objects.selected_related("user")
+        self.queryset = (Employee.objects.select_related("user")
                          .only("user__email").all())
 
     def get_instance_data(self):

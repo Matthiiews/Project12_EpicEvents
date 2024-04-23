@@ -13,7 +13,7 @@ class Command(EpicEventsCommand):
     """
 
     help = "Start the Epic Events program."
-    Permissions = ["SA", "SU", "MA"]
+    permissions = ["SA", "SU", "MA"]
 
     def handle(self, *args, **options):
         """

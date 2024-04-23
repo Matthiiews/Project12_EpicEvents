@@ -30,7 +30,7 @@ class Command(DataCreateCommand):
 
         for i in range(1, 41):
             first_name = fake.first_name()
-            last_name = fake.list_name()
+            last_name = fake.last_name()
             email = f"{first_name.lower()}.{last_name.lower()}@mail.com"
 
             employee = self.employee[(i - 1) % len(self.employee)]

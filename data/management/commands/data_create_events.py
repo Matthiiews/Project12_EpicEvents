@@ -13,7 +13,7 @@ from faker import Faker
 fake = Faker()
 
 
-class command(DataCreateCommand):
+class Command(DataCreateCommand):
     """
     Command to create 50 events. This command generates and creates 50 events
     with fake data. It selects contracts and their associated employees
