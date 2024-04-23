@@ -74,9 +74,9 @@ start the program with command: `python manage.py start` and login with one of t
 
   |   **Employee email**    |    Password     |  Role  |
   |:-----------------------:|:---------------:|:------:|
-  |  kelly.miller@mail.com  |  TestPassw0rd!  |   SA   |
-  |  craig.chavez@mail.com  |  TestPassw0rd!  |   SU   |
-  | ernest.bishop@mail.com  |  TestPassw0rd!  |   MA   |
+  |jason.jefferson@mail.com |  TestPassw0rd!  |   SA   |
+  |   tara.nguyen@mail.com  |  TestPassw0rd!  |   SU   |
+  |jennifer.white@mail.com  |  TestPassw0rd!  |   MA   |
 
 **Option 2:**
 
