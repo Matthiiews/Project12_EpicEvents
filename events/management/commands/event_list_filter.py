@@ -33,7 +33,7 @@ class Command(EpicEventsCommand):
         for event in self.queryset:
             event_data = {
                 "client": event.contract.client.email,
-                "date": event.date.strftme("%d/%m/%Y"),
+                "date": event.date.strftime("%d/%m/%Y"),
                 "name": event.name,
                 "location": event.location,
                 "max_guests": event.max_guests,

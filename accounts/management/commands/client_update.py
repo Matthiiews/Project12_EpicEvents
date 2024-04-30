@@ -16,7 +16,7 @@ class Command(EpicEventsCommand):
     """
     help = "Prompts for details to update a client."
     action = "UPDATE"
-    permiossions = ["SA"]
+    permissions = ["SA"]
 
     def get_queryset(self):
         self.queryset = Client.objects.filter(employee__user=self.user).all()
@@ -34,7 +34,7 @@ class Command(EpicEventsCommand):
             }
             table_data[f"Client {client.id}"] = client_data
         create_queryset_table(
-            table_data, "my Clients", headers=self.headers["client"][0.5])
+            table_data, "my Clients", headers=self.headers["client"][0:5])
 
     def get_requested_model(self):
         while True:

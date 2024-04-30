@@ -30,7 +30,7 @@ class Command(EpicEventsCommand):
         self.queryset = (
             Client.objects.select_related("employee")
             .only("employee__first_name", "employee__last_name",
-                  "employee__role").filter(contract_client__isnull=True).all()
+                  "employee__role").filter(contract_clients__isnull=True).all()
         )
 
     def get_instance_data(self):

@@ -131,13 +131,13 @@ def create_queryset_table(queryset, title, label=None, headers=None,
         create_pretty_table(all_items_list, f"All {title}: ",
                             order_by_fields=order_by_fields)
 
-        if headers is not None:
-            for key, values in queryset.items():
-                item_table = [f"{key}: "]
-                for value in values.values():
-                    item_table.append(value)
-                all_items_list.append(item_table)
+    if headers is not None:
+        for key, values in queryset.items():
+            item_table = [f"{key}: "]
+            for value in values.values():
+                item_table.append(value)
+            all_items_list.append(item_table)
 
-            create_model_table(all_items_list, headers=headers,
-                               title=f"All {title}: ",
-                               order_by_fields=order_by_fields)
+        create_pretty_table(
+            all_items_list, headers=headers, title=f"All {title}: ",
+            order_by_fields=order_by_fields)

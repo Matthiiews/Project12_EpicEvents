@@ -11,7 +11,7 @@ from cli.utils_tables import create_queryset_table
 from cli.utils_messages import create_error_message, create_success_message
 
 
-userModel = get_user_model
+UserModel = get_user_model()
 
 
 class Command(EpicEventsCommand):
@@ -25,6 +25,10 @@ class Command(EpicEventsCommand):
     help = "Prompts to create a new employee."
     action = "CREATE"
     permissions = ["MA"]
+
+    def get_queryset(self):
+        self.queryset = (
+            Employee.objects.select_related("user").only("user__email").all())
 
     def get_instance_data(self):
         super().get_instance_data()
@@ -56,7 +60,7 @@ class Command(EpicEventsCommand):
     @transaction.atomic
     def make_changes(self, data):
         try:
-            user = userModel.objects.create_user(
+            user = UserModel.objects.create_user(
                 data.pop("email", None), data.pop("password", None))
             self.object = Employee.objects.create(**data, user=user)
             return self.object

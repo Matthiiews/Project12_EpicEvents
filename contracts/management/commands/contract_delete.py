@@ -58,7 +58,7 @@ class Command(EpicEventsCommand):
         self.stdout.write()
         contract_table = [
             ["Client: ", self.object.client.email],
-            ["Employee: ", self.object.employee_user_email],
+            ["Employee: ", self.object.employee.user.email],
             ["Total costs: ", self.object.total],
             ["Amound paid: ", self.object.paid_amount],
             ["Rest amount: ", self.object.rest_amount],

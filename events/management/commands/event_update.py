@@ -10,7 +10,7 @@ from cli.utils_messages import (
 from events.models import Event
 
 
-class command(EpicEventsCommand):
+class Command(EpicEventsCommand):
     """
     This class `Command` is a subclass of `EpicEventsCommand` designed for
     updating event details within a system. It is specifically tailored for
@@ -31,7 +31,7 @@ class command(EpicEventsCommand):
             queryset = (
                 Event.objects.select_related("contract", "employee")
                 .only("contract__client__email", "employee__first_name",
-                      "employee__list_name", "employee__role").all())
+                      "employee__last_name", "employee__role").all())
         self.queryset = queryset
 
     def get_instance_data(self):

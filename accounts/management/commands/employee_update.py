@@ -61,7 +61,7 @@ class Command(EpicEventsCommand):
             ["[E]mail: ", self.object.user.email],
             ["[F]irst name: ", self.object.first_name],
             ["[L]ast name: ", self.object.last_name],
-            ["[R]ole: ", self.object.get.role_display()],
+            ["[R]ole: ", self.object.get_role_display()],
         ]
         create_pretty_table(employee_table, "Details of the Employee: ")
 

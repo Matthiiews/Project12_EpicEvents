@@ -32,10 +32,10 @@ class Command(EpicEventsCommand):
         for event in self.queryset:
             event_data = {
                 "email": event.contract.client.email,
-                "date": event.event.date.strftime("%d/%m/%Y"),
+                "date": event.date.strftime("%d/%m/%Y"),
                 "name": event.name,
                 "location": event.location,
-                "max_guests": event.max_quests,
+                "max_guests": event.max_guests,
             }
             table_data[f"Event {event.id}"] = event_data
 

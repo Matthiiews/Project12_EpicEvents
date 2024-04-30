@@ -56,7 +56,7 @@ class Command(EpicEventsCommand):
             all_clients_data, "Clients", headers=self.headers["client"])
         # Remove "employee" from headers
         create_queryset_table(
-            my_clients_data, "my Clients", headers=self.headers["client"][0.5])
+            my_clients_data, "my Clients", headers=self.headers["client"][0:5])
 
     def get_data(self):
         self.display_input_title("Enter details to create a client:")

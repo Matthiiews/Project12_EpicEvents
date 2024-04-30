@@ -10,6 +10,8 @@ class Command(EpicEventsCommand):
     `EpicEventsCommand`. It provides a menu for operations around contracts
     based on the user's role.
     """
+    help = "Menu for all operations around the contracts."
+    permissions = ["SA", "SU", "MA"]
 
     def handle(self, *args, **options):
         super().handle(*args, **options)

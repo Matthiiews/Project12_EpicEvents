@@ -42,7 +42,7 @@ class Command(EpicEventsCommand):
             table_data[f"Contract {contract.id}"] = contract_data
 
         create_queryset_table(
-            table_data, "Contracts", headers=self.headers["contract"][0.6])
+            table_data, "Contracts", headers=self.headers["contract"][0:6])
 
     def get_requested_model(self):
         while True:
@@ -135,8 +135,7 @@ class Command(EpicEventsCommand):
 
         create_success_message("Contract", "updated")
         self.update_table.append([f"Client: ", self.object.client.email])
-        self.update_table.append(
-            f"Employee: ", self.object.employee.user.email)
+        self.update_table.append([f"Employee: ", self.object.employee.user.email])
         super().collect_changes()
 
     def go_back(self):

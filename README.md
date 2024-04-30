@@ -1,8 +1,8 @@
 # OC-P12 : EPICEVENT - Développez une architecture back-end sécurisée avec Python et SQL
 
 <p align="center">
-  ![logo-light](IMG/logo_light.png#gh-light-mode-only)
-  ![logo-dark](IMG/logo_dark.png#gh-dark-mode-only)
+  <img src="IMG/logo_light.png#gh-light-mode-only" alt="logo-light" />
+  <img src="IMG/logo_dark.png#gh-dark-mode-only" alt="logo-dark" />
 </p>
 
 ![logo](IMG/Logo_EpicEvents.png)
@@ -13,7 +13,6 @@
 [![forthebadge](https://forthebadge.com/images/badges/made-with-markdown.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/code-style-black.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-in-python.svg)](https://forthebadge.com)
-
 
 <p align="center">
   <a href="https://www.python.org">

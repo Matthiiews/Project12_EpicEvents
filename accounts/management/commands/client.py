@@ -24,7 +24,7 @@ class Command(EpicEventsCommand):
             elif choice == 2:
                 call_command("client_create")
             elif choice == 3:
-                call_command("client update")
+                call_command("client_update")
             elif choice == 4:
                 call_command("start")
 
