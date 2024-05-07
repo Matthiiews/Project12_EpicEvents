@@ -2,6 +2,7 @@ from django.core.management import call_command
 
 from cli.utils_custom_command import EpicEventsCommand
 from cli.utils_menu import get_app_menu
+from cli.utils_messages import create_info_message
 
 
 class Command(EpicEventsCommand):
@@ -42,3 +43,11 @@ class Command(EpicEventsCommand):
                 call_command("employee_delete")
             elif choice == 5:
                 call_command("start")
+            elif choice == 6:
+                self.logout()
+                create_info_message("Login out")
+                call_command("start")
+                return
+            elif choice == 7:
+                create_info_message("Leaving app")
+                return

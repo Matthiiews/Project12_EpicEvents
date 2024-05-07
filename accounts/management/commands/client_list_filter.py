@@ -20,10 +20,7 @@ class Command(EpicEventsCommand):
     permissions = ["SA", "SU", "MA"]
 
     def get_queryset(self):
-        self.get_queryset = (Client.objects.select_related("employee")
-                             .only(
-                                 "employee__first_name", "employee__last_name",
-                                 "epmloyee__role").all())
+        self.queryset = (Client.objects.select_related("employee").all())
 
     def get_instance_data(self):
         super().get_instance_data()

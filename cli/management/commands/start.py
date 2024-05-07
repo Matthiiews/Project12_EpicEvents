@@ -2,7 +2,8 @@ from django.core.management import call_command
 
 from cli.utils_custom_command import EpicEventsCommand
 from cli.utils_menu import get_start_menu
-from cli.utils_messages import create_info_message
+from cli.utils_messages import (
+    create_info_message, create_permission_denied_message)
 
 
 class Command(EpicEventsCommand):
@@ -28,7 +29,11 @@ class Command(EpicEventsCommand):
         choice = get_start_menu("Epic Events")
 
         if choice == 1:
-            call_command("employee")
+            if self.user.employee_users.role in ["SA", "SU"]:
+                create_permission_denied_message
+                call_command("start")
+            elif self.user.employee_users.role == "MA":
+                call_command("employee")
         elif choice == 2:
             call_command("client")
         elif choice == 3:
@@ -40,4 +45,5 @@ class Command(EpicEventsCommand):
         elif choice == 6:
             self.logout()
             create_info_message("logging out...")
+            call_command("start")
             return
