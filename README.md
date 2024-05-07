@@ -43,7 +43,7 @@ Project 12 OpenClassrooms Path - Epic Events -- develop a secure back-end archit
 
 Epic Events is an Event Manager CLI program to create, update and delete employees, clients, contracts and events.
 
-I have chosen to use the Django ORM to create my models, use BaseCommand to create, update, delete and also to display a manu. As admin tool I have used the Django admin interphase. The database is a SQLite database.
+I have chosen to use the Django ORM to create my models, use BaseCommand to create, update, delete and also to display a manu. As admin tool I have used the Django admin interphase. The database is a Postgres sql database.
 My permission system is integrated in the EpicEventCommand, where I use a class attribute 'permission' to verify if the user has the permission to access the command.
 
 The authentication is Django based but to create a token I am using the JWT. To integrate the token into the commands, there is a JWTTokenMixin. This mixin generates a token,
