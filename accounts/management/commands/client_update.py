@@ -10,11 +10,47 @@ from cli.utils_tables import create_queryset_table, create_pretty_table
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed for
-    updating client details within a system. It is specifically tailored for
-    users with "SA" permissions, indicating that it is intended for sales.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour mettre à jour les détails des clients dans un système. Elle est
+    spécifiquement adaptée aux utilisateurs disposant des permissions "SA",
+    indiquant qu'elle est destinée aux ventes.
+
+    - `help` : Une chaîne décrivant l'objectif de la commande, qui consiste à
+    demander les détails nécessaires pour mettre à jour un client.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "UPDATE".
+    - `permissions` : Une liste des rôles autorisés à exécuter cette commande,
+    dans ce cas, seul "SA" (Ventes) a la permission.
+
+    Les principales méthodes de cette classe incluent :
+
+    - `get_queryset` : Initialise le queryset pour les objets `Client`, en
+    sélectionnant les objets `Employee` associés à chaque événement.
+    - `get_create_model_table` : Génère une table de tous les e-mails des
+    clients pour aider l'utilisateur à sélectionner un client à mettre à jour.
+    - `get_requested_model` : Invite l'utilisateur à saisir l'adresse e-mail
+    du client qu'il souhaite mettre à jour et affiche les détails du client
+    pour confirmation.
+    - `get_fields_to_update` : Invite l'utilisateur à sélectionner les champs
+    qu'il souhaite mettre à jour.
+    - `get_available_fields` : Associe les champs sélectionnés à leurs
+    méthodes d'entrée correspondantes pour la collecte de données.
+    - `get_data` : Collecte les nouvelles données pour les champs sélectionnés
+    auprès de l'utilisateur.
+    - `make_changes` : Met à jour le client avec les nouvelles données.
+    - `collect_changes` : Confirme la mise à jour du client et affiche un
+    message de réussite.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des clients.
+
+    Cette classe encapsule la fonctionnalité pour mettre à jour les détails
+    des clients, en veillant à ce que seuls les utilisateurs disposant des
+    permissions appropriées puissent effectuer cette action. Elle tire parti
+    de la classe `EpicEventsCommand` pour les fonctionnalités de commande
+    communes, telles que l'affichage des invites de saisie et la gestion de la
+    saisie utilisateur.
     """
-    help = "Prompts for details to update a client."
+    help = "Demande les détails pour mettre à jour un client."
     action = "UPDATE"
     permissions = ["SA"]
 

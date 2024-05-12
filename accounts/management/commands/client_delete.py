@@ -11,11 +11,43 @@ from accounts.models import Client
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed for
-    managing client deletions within a system. It is specifically tailored for
-    users with "MA" permissions, indicating that it is intended for managers.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour gérer les suppressions de clients dans un système. Elle est
+    spécifiquement adaptée aux utilisateurs disposant des permissions "MA",
+    indiquant qu'elle est destinée aux managers.
+
+    - `help` : Une chaîne décrivant l'objectif de la commande, qui consiste à
+    demander les détails nécessaires pour supprimer un client.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "DELETE".
+    - `permissions` : Une liste des rôles autorisés à exécuter cette commande,
+    dans ce cas, seule "MA" (Management) a la permission.
+
+    Les principales méthodes de cette classe incluent :
+
+    - `get_create_model_table` : Génère une table de tous les e-mails des
+    clients pour aider l'utilisateur à sélectionner un client à supprimer.
+    - `get_requested_model` : Invite l'utilisateur à saisir l'adresse e-mail
+    du client qu'il souhaite supprimer et affiche les détails du client pour
+    confirmation.
+    - `get_data` : Invite l'utilisateur à confirmer la suppression du client
+    sélectionné.
+    - `make_changes` : Si l'utilisateur confirme la suppression, il procède à
+    la suppression du client ; sinon, il annule l'opération et retourne à
+    l'interface de gestion des clients.
+    - `collect_changes` : Confirme la suppression du client et affiche un
+    message de réussite.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des clients.
+
+    Cette classe encapsule la fonctionnalité pour supprimer des clients, en
+    veillant à ce que seuls les utilisateurs disposant des permissions
+    appropriées puissent effectuer cette action. Elle tire parti de la classe
+    `EpicEventsCommand` pour les fonctionnalités de commande communes, telles
+    que l'affichage des invites de saisie et la gestion de la saisie
+    utilisateur.
     """
-    help = "Prompts for details to delete a client."
+    help = "Demande les détails pour supprimer un client."
     action = "DELETE"
     permissions = ["MA"]
 

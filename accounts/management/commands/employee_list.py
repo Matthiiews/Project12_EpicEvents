@@ -8,12 +8,36 @@ from cli.utils_tables import create_queryset_table
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed to list
-    all employees within the system. It is accessible to users with "SA"
-    (Sales), "SU" (Support), or "MA" (Management) permissions.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour répertorier tous les employés du système. Elle est accessible aux
+    utilisateurs disposant des permissions "SA" (Ventes), "SU" (Support) ou
+    "MA" (Management).
+
+    - `help` : Une chaîne décrivant l'objectif de la commande, qui est de
+    répertorier tous les employés.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "LIST".
+    - `permissions` : Une liste des rôles autorisés à exécuter cette commande.
+
+    Les principales méthodes de cette classe incluent :
+
+    - `get_queryset` : Initialise le queryset pour les objets `Employee`, en
+    sélectionnant les objets `User` associés à chaque employé.
+    - `get_create_model_table` : Génère une table de tous les employés,
+    affichant des informations pertinentes telles que l'e-mail, le nom complet
+    et le rôle.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des employés.
+
+    Cette classe encapsule la fonctionnalité pour répertorier tous les
+    employés, en veillant à ce que seuls les utilisateurs disposant des
+    permissions appropriées puissent effectuer cette action. Elle tire parti
+    de la classe `EpicEventsCommand` pour les fonctionnalités de commande
+    communes, telles que l'affichage des invites de saisie et la gestion de la
+    saisie utilisateur.
     """
 
-    help = "Lists all employees."
+    help = "Répertorie tous les employés."
     action = "LIST"
     permissions = ["SA", "SU", "MA"]
 

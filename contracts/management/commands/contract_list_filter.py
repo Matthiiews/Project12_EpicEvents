@@ -9,12 +9,56 @@ from contracts.models import Contract
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed to list
-    all contracts with an option to filter the list based on user input. It is
-    accessible to users with "SA", "SU", or "MA" permissions.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour répertorier tous les contrats avec une option de filtrage basée sur
+    l'entrée utilisateur. Elle est accessible aux utilisateurs ayant les
+    permissions "SA", "SU" ou "MA".
+
+    - `help` : Une chaîne décrivant l'objectif de la commande, qui est de
+    répertorier tous les contrats et éventuellement de les filtrer.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "LIST_FILTER" (LIST_FILTER).
+    - `permissions` : Une liste de rôles autorisés à exécuter cette commande,
+    dans ce cas, "SA" (Ventes), "SU" (Support) et "MA" (Management) ont la
+    permission.
+
+    Les principales méthodes de cette classe comprennent :
+
+    - `get_queryset` : Initialise le queryset pour les objets `Contrat`,
+    en sélectionnant les objets `Client` et `Employé` associés à chaque
+    contrat.
+    - `get_create_model_table` : Génère un tableau de tous les contrats,
+    affichant des informations pertinentes telles que l'e-mail, le montant
+    total, le montant payé, le montant restant, l'état et l'employé.
+    - `get_data` : Invite l'utilisateur à décider s'il souhaite filtrer les
+    contrats, capturant leur choix.
+    - `user_choice` : Gère le choix de l'utilisateur de filtrer les contrats,
+    avec une gestion spéciale pour les rôles "SA" et "MA" pour permettre le
+    filtrage sans messages d'autorisation refusée.
+    - `choose_attributes` : Affiche les champs disponibles pour le filtrage et
+    permet à l'utilisateur de sélectionner les champs par lesquels il souhaite
+    filtrer.
+    - `request_field_selection` : Invite l'utilisateur à sélectionner des
+    champs spécifiques pour le filtrage et à choisir l'ordre
+    (ascendant ou descendant).
+    - `get_user_queryset` : Filtre le queryset en fonction de la sélection de
+    l'utilisateur et de sa préférence d'ordre.
+    - `filter_selected_fields` : Applique les filtres et l'ordre sélectionnés
+    au queryset, le préparant pour l'affichage.
+    - `display_result` : Affiche la liste filtrée et ordonnée des contrats à
+    l'utilisateur.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    probablement à l'interface principale de gestion des contrats.
+
+    Cette classe encapsule la fonctionnalité de répertorier et éventuellement
+    filtrer les contrats, en veillant à ce que seuls les utilisateurs ayant
+    les permissions appropriées puissent effectuer ces actions. Elle utilise
+    la classe `EpicEventsCommand` pour les fonctionnalités communes de
+    commande, telles que l'affichage des invites de saisie et la gestion de
+    l'entrée utilisateur.
     """
 
-    help = "Lists all contracts."
+    help = "Liste de tous les contrats."
     action = "LIST_FILTER"
     permissions = ["SA", "SU", "MA"]
 
@@ -78,20 +122,20 @@ class Command(EpicEventsCommand):
         selected_fields = self.multiple_choice_str_input(
             ("C", "T", "A", "S"), "Your choice? [C, T, A, S]")
 
-        # ascending or descending
+        # ascendant ou descendant
         order = self.choice_str_input(
             ("A", "D"), "Your choice ? [A]scending or [D]escending")
         self.stdout.write()
         return selected_fields, order
 
     def get_user_queryset(self):
-        # if an MA employee is authenticated, create a queryset with all SA
-        # employees
+        # Si un employé MA est authentifié, créez un queryset avec tous les
+        # employés SA.
         if self.user.employee_users.role == "MA":
             return self.queryset.filter(employee__role="SA")
 
-        # if an SA employee is authenticated, create queryset of this SA
-        # employee
+        # Si un employé SA est authentifié, créez un queryset de cet employé
+        # SA.
         return self.queryset.filter(employee__user=self.user)
 
     def filter_selected_fields(self, selected_fields, order, user_queryset):

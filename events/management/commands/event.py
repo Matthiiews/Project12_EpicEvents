@@ -7,12 +7,45 @@ from cli.utils_messages import create_info_message
 
 class Command(EpicEventsCommand):
     """
-    This script defines a class `Command` that inherits from
-    `EpicEventsCommand`. It provides a menu for operations around events based
-    on the user's role.
+    Ce script définit une classe `Command` qui hérite de `EpicEventsCommand`.
+    Il fournit un menu pour les opérations liées aux événements en fonction du
+    rôle de l'utilisateur.
+
+    - L'attribut `help` fournit une brève description de l'objectif de la
+    commande.
+    - L'attribut `permissions` répertorie les rôles autorisés à exécuter cette
+    commande.
+    - La méthode `handle` est remplacée pour personnaliser le comportement de
+    la commande en fonction du rôle de l'utilisateur et de son choix dans le
+    menu de l'application.
+
+    La méthode `handle` effectue les opérations suivantes :
+    - Appelle la méthode `handle` de la superclasse pour garantir une
+    initialisation correcte.
+    - Récupère le choix de l'utilisateur dans le menu de l'application pour la
+    section "événement".
+    - Selon le rôle de l'utilisateur (`SA`, `SU` ou `MA`), elle exécute
+    différentes commandes en fonction du choix de l'utilisateur :
+        - Pour le rôle `SA` :
+            - Choix 1 : Appelle la commande `event_list_filter`.
+            - Choix 2 : Appelle la commande `event_create`.
+            - Choix 3 : Appelle la commande `start`.
+        - Pour le rôle `SU` :
+            - Choix 1 : Appelle la commande `event_list_filter`.
+            - Choix 2 : Appelle la commande `event_update`.
+            - Choix 3 : Appelle la commande `start`.
+        - Pour le rôle `MA` :
+            - Choix 1 : Appelle la commande `event_list_filter`.
+            - Choix 2 : Appelle la commande `event_update`.
+            - Choix 3 : Appelle la commande `event_delete`.
+            - Choix 4 : Appelle la commande `start`.
+
+    Cette classe illustre l'utilisation de l'héritage et du contrôle d'accès
+    basé sur les rôles dans une interface en ligne de commande, permettant une
+    gestion flexible et sécurisée des opérations sur les événements.
     """
 
-    help = "Menu for all operations around the events."
+    help = "Menu pour toutes les opérations liées aux événements."
     permissions = ["SA", "SU", "MA"]
 
     def handle(self, *args, **options):

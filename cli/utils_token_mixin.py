@@ -20,17 +20,48 @@ TOKEN_SECRET_KEY = "R2uKxYV6He92ocDkDDg6bdWvpceGrI2i"
 
 class JWTTokenMixin:
     """
-    Mixin to handle JWT token generation, validation, user retrieval, and
-    login handling.
+    Mixin pour gérer la génération de jetons JWT, la validation, la
+    récupération de l'utilisateur et la gestion de la connexion.
 
-    This mixin provides functionality for generating a JWT token, validating
-    the token, retrieving the corresponding user, and handling login if no
-    token is available.
-    The generated token is saved in a file named 'token.txt'.
+    Cette mixin fournit des fonctionnalités pour générer un jeton JWT, valider
+    le jeton, récupérer l'utilisateur correspondant et gérer la connexion si
+    aucun jeton n'est disponible. Le jeton généré est enregistré dans un
+    fichier nommé 'token.txt'.
+
+    Attributs :
+        help (str) : Une brève description de l'objectif et de la
+            fonctionnalité de la mixin.
+            Cette mixin est conçue pour être utilisée dans les commandes de
+            gestion Django ou d'autres composants nécessitant la manipulation
+            de jetons JWT.
+
+        token (str) : Le jeton JWT généré ou récupéré par la mixin.
+            Il est initialement défini sur None.
+
+        payload (dict) : Le payload extrait du jeton JWT.
+            Il est initialement défini sur None.
+
+        user : L'objet utilisateur correspondant récupéré à partir du jeton
+            JWT.
+            Il est initialement défini sur None.
+
+    Utilisation :
+        1. Étendez votre commande de gestion Django ou d'autres composants
+        avec cette mixin.
+        2. Appelez les méthodes nécessaires pour générer, valider et manipuler
+        le jeton JWT.
+
+    Remarque :
+        Assurez-vous que les dépendances requises pour la manipulation de JWT
+        sont correctement installées (par exemple, la bibliothèque `pyjwt`).
+
+        Le jeton généré est enregistré dans un fichier nommé 'token.txt'.
+        Assurez-vous que les autorisations d'écriture appropriées sont
+        accordées.
     """
     help = (
-        "Mixin to generate a JWT token, validate the token, get the corresponding user"
-        "and handle the login if no token. The token will be saved in a file: token.txt"
+        "Mixin pour générer un jeton JWT, valider le jeton, récupérer l'utilisateur correspondant"
+        "et gérer la connexion en l'absence de jeton. Le jeton sera enregistré dans un fichier : token.txt"
     )
     token = None
     payload = None
@@ -39,19 +70,40 @@ class JWTTokenMixin:
     def generate_token(self, user_id, email,
                        expires_data=datetime.timedelta(hours=1)):
         """
-        Generate a JWT token for the given user ID and email.
+        Générer un jeton JWT pour l'identifiant utilisateur et l'adresse
+        e-mail donnés.
 
         Args:
-            user_id (int): The ID of the user for whom the token is generated.
-            email (str): The email address of the user.
-            expires_delta (datetime.timedelta, optional): The expiration time
-            delta for the token.
-                Defaults to 1 hour.
+            user_id (int): L'ID de l'utilisateur pour lequel le jeton est
+            généré.
+            email (str): L'adresse e-mail de l'utilisateur.
+            expires_delta (datetime.timedelta, optionnel): La durée
+            d'expiration du jeton.
+                Par défaut, 1 heure.
 
         Returns:
-            str: The generated JWT token.
+            str: Le jeton JWT généré.
+
+        Note:
+            Cette fonction génère un jeton JWT avec l'identifiant utilisateur
+            et l'e-mail fournis, en définissant les réclamations de date
+            d'émission (iat) et d'expiration (exp) en conséquence.
+            Le jeton est encodé en utilisant l'algorithme HMAC avec la
+            SECRET_KEY fournie.
+            Le jeton généré est ensuite enregistré dans le fichier spécifié
+            dans le paramètre JWT_PATH.
+
+        Raises:
+            IOError: S'il y a une erreur lors de l'écriture du jeton dans le
+            fichier.
+
+        Example:
+            token = generate_token(
+                123, 'exemple@exemple.com', expires_delta=datetime.timedelta
+                (days=7)
+            )
         """
-        # Validate input parameters
+        # Valider les paramètres d'entrée.
         if not isinstance(user_id, int) or not isinstance(email, str) or not email:
             raise ValueError("Invalid user_id or email")
 
@@ -63,29 +115,29 @@ class JWTTokenMixin:
             "exp": now + expires_data,
         }
 
-        # Encode the payload to generate the token
+        # Encoder la charge utile pour générer le jeton.
         token = jwt.encode(payload, TOKEN_SECRET_KEY, algorithm="HS256")
 
-        # Save the token to the file
+        # Enregistrer le jeton dans le fichier.
         try:
             with open(settings.JWT_PATH, "w") as file:
                 file.write(token)
         except IOError as e:
-            # Error while writing ti the file
+            # Erreur lors de l'écriture dans le fichier.
             raise IOError(f"Error writing token to file: {e}")
         return token
 
     def verify_token(self):
         """
-        Verify the JWT token and save the payload inside the class attribute
-        payload.
+        Vérifiez le jeton JWT et enregistrez la charge utile dans l'attribut
+        de classe payload.
 
         Returns:
-            bool: True if the token is successfully verified, False otherwise.
+            bool: True si le jeton est vérifié avec succès, False sinon.
 
         Raises/redirect:
-            If the token is expired or invalid the user will be redirected to
-            log in again
+            Si le jeton est expiré ou invalide, l'utilisateur sera redirigé
+            pour se connecter à nouveau.
         """
         try:
             self.payload = jwt.decode(
@@ -102,11 +154,11 @@ class JWTTokenMixin:
 
     def get_user(self):
         """
-        Get the corresponding user for the token.
+        Obtenez l'utilisateur correspondant au jeton.
 
         Returns:
-            UserModel or None: The corresponding user object if found,
-            None otherwise.
+            UserModel ou None: L'objet utilisateur correspondant s'il est
+            trouvé, None sinon.
         """
         try:
             self.verify_token()
@@ -122,20 +174,19 @@ class JWTTokenMixin:
 
     def login(self):
         """
-        This login method calls get_login_data to prompt the user for the
-        email and the password.
-        And in make_login_changes the user will be authenticated and the token
-        will be saved as
-        class attribute.
+        Cette méthode de connexion appelle get_login_data pour demander à
+        l'utilisateur son email et son mot de passe.
+        Et dans make_login_changes l'utilisateur sera authentifié et le jeton
+        sera enregistré en tant qu'attribut de classe.
         """
         data = self.get_login_data()
         self.make_login_changes(data)
 
     def logout(self):
         """
-        The logout method resets the class attribute payload and token to None.
-        And overwrite
-        the token.txt file with empty content.
+        La méthode de déconnexion réinitialise l'attribut de classe payload et
+        le jeton à None.
+        Et écrase le fichier token.txt avec un contenu vide.
         """
         self.payload = None
         self.token = None
@@ -144,11 +195,11 @@ class JWTTokenMixin:
 
     def get_login_data(self):
         """
-        The user will be prompt for the email address and the password to
-        login.
-        Returns:
-            email and password as data which will be needed in
-            make_login_changes.
+        L'utilisateur sera invité à saisir l'adresse e-mail et le mot de passe
+        pour se connecter.
+        Retourne :
+            l'email et le mot de passe en tant que données qui seront
+            nécessaires dans make_login_changes.
         """
         self.stdout.write()
         self.display_input_title("Enter email and password to login:")
@@ -159,14 +210,14 @@ class JWTTokenMixin:
 
     def make_login_changes(self, data):
         """
-        The function verifies if a User with prompted email exists. If the
-        User exists, the user
-        will be authenticated. When the authenticated user is found,
-        the class method generate_token will be called to generate a token.
-        This token will be saved in the class attribute token.
-        A success message is displayed.
-        Raises:
-            If email address is wrong an error is thrown.
+        La fonction vérifie si un utilisateur avec l'adresse e-mail saisie
+        existe. Si l'utilisateur existe, il sera authentifié. Lorsque
+        l'utilisateur authentifié est trouvé, la méthode de classe
+        generate_token sera appelée pour générer un jeton. Ce jeton sera
+        enregistré dans l'attribut de classe token. Un message de réussite est
+        affiché.
+        Raises :
+            Si l'adresse e-mail est incorrecte, une erreur est déclenchée.
         """
         email = data["email"]
         user_exists = UserModel.objects.filter(email=email).exists()
@@ -188,14 +239,12 @@ class JWTTokenMixin:
 
     def handle(self, *args, **options):
         """
-        Handle the command execution.
+        Gère l'exécution de la commande.
 
-        Verifies if the file token.txt exists, if it does not exist, it
-        creates the file without
-        any content.
-        When the file token.txt exists, it reads the token and saves it in the
-        class attribute
-        token and calls get_user method to associate a user to the token.
+        Vérifie si le fichier token.txt existe, s'il n'existe pas, il crée le
+        fichier sans aucun contenu. Lorsque le fichier token.txt existe, il
+        lit le jeton et le sauvegarde dans l'attribut de classe token et
+        appelle la méthode get_user pour associer un utilisateur au jeton.
         """
         file_path = settings.JWT_PATH  # "cli/token.txt"
 

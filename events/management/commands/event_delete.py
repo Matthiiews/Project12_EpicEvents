@@ -12,12 +12,44 @@ from events.models import Event
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed for
-    managing event deletions within a system. It is specifically tailored for
-    users with "MA" permissions, indicating that it is intended for managers.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour gérer les suppressions d'événements dans un système. Elle est
+    spécifiquement adaptée aux utilisateurs disposant des permissions "MA",
+    ce qui indique qu'elle est destinée aux gestionnaires.
+
+    - `help` : Une chaîne décrivant l'objectif de la commande, qui consiste à
+    demander les détails nécessaires pour supprimer un événement.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "DELETE".
+    - `permissions` : Une liste des rôles autorisés à exécuter cette commande,
+    dans ce cas, seul "MA" (Management) a la permission.
+
+    Les méthodes clés de cette classe incluent :
+
+    - `get_create_model_table` : Génère un tableau de tous les événements pour
+    aider l'utilisateur à sélectionner un événement à supprimer.
+    - `get_requested_model` : Demande à l'utilisateur de saisir l'adresse
+    e-mail du client correspondant à l'événement qu'ils souhaitent supprimer
+    et affiche les détails de l'événement pour confirmation.
+    - `get_data` : Demande à l'utilisateur de confirmer la suppression de
+    l'événement sélectionné.
+    - `make_changes` : Si l'utilisateur confirme la suppression, il procède à
+    la suppression de l'événement ; sinon, il annule l'opération et retourne à
+    l'interface de gestion des événements.
+    - `collect_changes` : Confirme la suppression de l'événement et affiche un
+    message de succès.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des événements.
+
+    Cette classe encapsule la fonctionnalité de suppression des événements, en
+    veillant à ce que seuls les utilisateurs disposant des permissions
+    appropriées puissent effectuer cette action. Elle exploite la classe
+    `EpicEventsCommand` pour des fonctionnalités de commande communes, telles
+    que l'affichage des invites de saisie et la gestion de la saisie
+    utilisateur.
     """
 
-    help = "Prompts for details to delete an event."
+    help = "Demande les détails pour supprimer un événement."
     action = "DELETE"
     permissions = ["MA"]
 

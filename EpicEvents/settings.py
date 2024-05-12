@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 from pathlib import Path
 
@@ -146,7 +147,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Settings for Sentry
 sentry_sdk.init(
-    dsn="https://fcf73bd9fc8b9c2d8f6417586d61b439@o4506774266249216.ingest.sentry.io/4506774268149760",
+    dsn="https://baeda0cffee989539feeb6bbdf9d9373@o4506979700834304.ingest.us.sentry.io/4507217221582848",
+    integrations=[DjangoIntegration()],
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.
     traces_sample_rate=1.0,

@@ -7,14 +7,30 @@ UserModel = get_user_model
 
 class Command(BaseCommand):
     """
-    This command is designed to create a user with a specified email and
-    password.
-    If a user with the same email already exists, it will print a warning
-    message.
-    Otherwise, it will create the user and print a success message.
+    Cette commande est conçue pour créer un utilisateur avec une adresse
+    e-mail et un mot de passe spécifiés. Si un utilisateur avec la même
+    adresse e-mail existe déjà, elle affichera un message d'avertissement.
+    Sinon, elle créera l'utilisateur et affichera un message de réussite.
+
+    Attributes :
+        help (str) : Description de la commande.
+
+    Méthods :
+        handle(self, *args, **options) : Exécute la commande pour créer un
+        superutilisateur.
+            Args :
+                *args : Liste d'arguments de longueur variable.
+                **options : Arguments de mots-clés arbitraires.
+
+            Returns :
+                None
+
+            Raises :
+                IntegrityError : Si un superutilisateur avec la même adresse
+                e-mail existe déjà.
     """
 
-    help = "This command creates a user."
+    help = "Cette commande crée un utilisateur."
 
     def handle(self, *args, **options):
         try:

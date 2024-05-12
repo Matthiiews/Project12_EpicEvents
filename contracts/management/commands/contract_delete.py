@@ -12,13 +12,44 @@ from contracts.models import Contract
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed for
-    managing contract deletions within a system. It is specifically tailored
-    for users with "MA" permissions, indicating that it is intended for
-    managers.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour gérer la suppression de contrats dans un système. Elle est
+    spécifiquement adaptée aux utilisateurs disposant des permissions "MA",
+    ce qui indique qu'elle est destinée aux gestionnaires.
+
+    - `help` : Une chaîne décrivant le but de la commande, qui consiste à
+    demander les détails nécessaires pour supprimer un contrat.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "DELETE".
+    - `permissions` : Une liste de rôles autorisés à exécuter cette commande,
+    dans ce cas, seul "MA" (Management) a la permission.
+
+    Les méthodes clés de cette classe comprennent :
+
+    - `get_create_model_table` : Génère un tableau de tous les contrats pour
+    aider l'utilisateur à sélectionner un contrat à supprimer.
+    - `get_requested_model` : Invite l'utilisateur à saisir l'adresse e-mail
+    du client du contrat qu'il souhaite supprimer et affiche les détails du
+    contrat pour confirmation.
+    - `get_data` : Invite l'utilisateur à confirmer la suppression du contrat
+    sélectionné.
+    - `make_changes` : Si l'utilisateur confirme la suppression, il procède à
+    la suppression du contrat ; sinon, il annule l'opération et retourne à
+    l'interface de gestion des contrats.
+    - `collect_changes` : Confirme la suppression du contrat et affiche un
+    message de succès.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des contrats.
+
+    Cette classe encapsule la fonctionnalité de suppression de contrats, en
+    veillant à ce que seuls les utilisateurs disposant des permissions
+    appropriées puissent effectuer cette action. Elle exploite la classe
+    `EpicEventsCommand` pour les fonctionnalités de commande courantes, telles
+    que l'affichage des invites de saisie et la gestion de la saisie
+    utilisateur.
     """
 
-    help = "Prompts for details to delete a contract."
+    help = "Demande des détails pour supprimer un contrat."
     action = "DELETE"
     permissions = ["MA"]
 

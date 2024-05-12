@@ -6,24 +6,24 @@ from cli.utils_messages import create_info_message
 
 def display_table_title(text):
     """
-    Prints the title of the table with specified styling.
+    Affiche le titre du tableau avec le style spécifié.
 
-    Args:
-        text (str): The title text to be displayed.
+    Args :
+        text (str): Le texte du titre à afficher.
     """
     if text is None or text.strip() == "":
         raise ValueError("Title text cannot be empty or None")
 
-    styled_text = f"{'':^3}{text} {'':^3}"  # Center-align the text with padding
+    styled_text = f"{'':^3}{text} {'':^3}"  # Centre le texte avec un remplissage.
     style_text_display(styled_text, color=CYAN, bold=True)
 
 
 def display_info(order_by_fields):
     """
-    Prints information of the filtering of the 'user_queryset'.
+    Affiche les informations du filtrage du 'user_queryset'.
 
-    Args:
-        order_by_fields (str): The 'order_by_fields' to be displayed.
+    Args :
+        order_by_fields (str) : Les 'order_by_fields' à afficher.
     """
     if order_by_fields is None:
         raise ValueError("Info cannot be None")
@@ -45,16 +45,16 @@ def display_info(order_by_fields):
 def create_pretty_table(table_list, title=None, headers=None,
                         order_by_fields=None):
     """
-    Creates a formatted table using the tabulate library.
+    Crée un tableau formaté en utilisant la bibliothèque tabulate.
 
     Args:
-        table_list (list): List of lists representing the rows of the table.
-        title (str, optional): Title to display above the table
-        . Defaults to None.
-        headers (list, optional): List of strings representing column headers.
-        Defaults to None.
-        order_by_fields (list, optional): Just for list_filter. To display
-        info of the filter.
+        table_list (list): Liste de listes représentant les lignes du tableau.
+        title (str, facultatif): Titre à afficher au-dessus du tableau. Par
+        défaut, None.
+        headers (list, facultatif): Liste de chaînes représentant les en-têtes
+        de colonnes. Par défaut, None.
+        order_by_fields (list, facultatif): Uniquement pour list_filter. Pour
+        afficher les informations du filtre. Par défaut, None.
     """
     if not table_list:
         print("No data available to create table.")
@@ -79,12 +79,12 @@ def create_pretty_table(table_list, title=None, headers=None,
 
 def create_model_table(model, column_label, title):
     """
-    Creates data for the create_pretty_table function based on a model.
+    Crée des données pour la fonction create_pretty_table basée sur un modèle.
 
     Args:
-        model (Model): Django model class.
-        column_label (str): Label of the column to display.
-        title (str): Title for the table.
+        model (Modèle): Classe de modèle Django.
+        column_label (str): Étiquette de la colonne à afficher.
+        title (str): Titre pour le tableau.
     """
 
     all_items = model.objects.all()
@@ -93,7 +93,7 @@ def create_model_table(model, column_label, title):
     if all_items:
         for item in all_items:
             if "." in column_label:
-                # Handle nested attributes
+                # Gérer les attributs imbriqués
                 attribute_chain = column_label.split(".")
                 attribute_value = item
                 for attr in attribute_chain:
@@ -114,8 +114,38 @@ def create_model_table(model, column_label, title):
 def create_queryset_table(queryset, title, label=None, headers=None,
                           order_by_fields=None):
     """
-    Creates a formatted table based on the provided queryset, title, label,
-    and headers.
+    Crée un tableau formaté basé sur le queryset fourni, le titre, l'étiquette
+    et les en-têtes.
+
+    Args:
+        queryset: Un QuerySet Django représentant les données à afficher dans
+        le tableau.
+        title (str): Le titre du tableau.
+        label (str, facultatif): Une étiquette à préfixer à chaque ligne du
+        tableau. Par défaut, None.
+        headers (list, facultatif): Une liste d'en-têtes de colonnes pour le
+        tableau. Si fourni, chaque ligne dans le tableau sera étiquetée avec
+        ces en-têtes. Par défaut, None.
+        order_by_fields (list, facultatif): Uniquement pour list_filter. Pour
+        afficher les informations du filtre.
+
+    Returns:
+        None: La fonction ne retourne pas de valeur. Au lieu de cela, elle
+        imprime le tableau formaté.
+
+    Remarque:
+        La fonction formate le tableau en fonction du queryset, du titre, de
+        l'étiquette et des en-têtes fournis.
+        Si à la fois l'étiquette et les en-têtes sont fournis, chaque ligne
+        sera étiquetée avec l'étiquette, et le tableau aura les en-têtes
+        spécifiés. Si seule l'étiquette est fournie, chaque ligne sera
+        étiquetée avec l'étiquette. Si seuls les en-têtes sont fournis,
+        le tableau aura les en-têtes spécifiés.
+        Si ni l'étiquette ni les en-têtes ne sont fournis, le tableau
+        affichera directement le queryset.
+
+        Cette fonction suppose que la fonction `create_pretty_table` est
+        définie ailleurs pour gérer le formatage réel du tableau.
     """
     if not queryset:
         create_info_message("No data available")

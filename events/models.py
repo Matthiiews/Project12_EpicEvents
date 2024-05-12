@@ -6,9 +6,25 @@ from django.core.validators import MinValueValidator
 
 class Event(models.Model):
     """
-    Model representing an event.
-    This model represents an event with various attributes such as contract,
-    employee, date, name, location, max_guests, and notes.
+    Modèle représentant un événement.
+    Ce modèle représente un événement avec divers attributs tels que contrat,
+    employé, date, nom, lieu, max_guests et notes.
+
+    - `contrat` (ForeignKey): Une clé étrangère vers le modèle Contract,
+    représentant le contrat associé à l'événement.
+    - `employé` (ForeignKey): Une clé étrangère vers le modèle Employee,
+    représentant l'employé assigné à l'événement.
+    - `date` (DateTimeField): La date et l'heure auxquelles l'événement est
+    programmé.
+    - `nom` (CharField): Le nom de l'événement.
+    - `lieu` (CharField): L'adresse où l'événement aura lieu.
+    - `max_guests` (PositiveIntegerField): Le nombre maximum d'invités
+    autorisés pour l'événement.
+    - `notes` (TextField): Notes ou détails supplémentaires sur l'événement.
+
+    La méthode `__str__` retourne une représentation sous forme de chaîne de
+    caractères de l'événement, comprenant son nom et l'e-mail de l'employé
+    associé.
     """
 
     contract = models.ForeignKey("contracts.Contract", on_delete=models.CASCADE,

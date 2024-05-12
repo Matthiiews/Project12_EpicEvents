@@ -8,9 +8,26 @@ from cli.utils_messages import (
 
 class Command(EpicEventsCommand):
     """
-    This script defines a class `Command` that inherits from
-    `EpicEventsCommand`. It provides the
-    start menu for choosing which model to go to next.
+    Ce script définit une classe `Command` qui hérite de `EpicEventsCommand`.
+    Il fournit le menu de démarrage pour choisir le modèle vers lequel aller
+    ensuite.
+
+    - L'attribut `help` fournit une brève description du but de la commande.
+    - L'attribut `permissions` répertorie les rôles autorisés à exécuter cette
+    commande.
+    - La méthode `handle` est remplacée pour personnaliser le comportement de
+    la commande en fonction du rôle de l'utilisateur et de son choix dans le
+    menu de l'application.
+
+    La méthode `handle` effectue les opérations suivantes :
+    - Appelle la méthode `handle` de la superclasse pour assurer une
+    initialisation correcte.
+    - Récupère le choix de l'utilisateur dans le menu de démarrage de
+    l'application pour l'étape suivante.
+
+    Cette classe illustre l'utilisation de l'héritage et du contrôle d'accès
+    basé sur les rôles dans une interface en ligne de commande, permettant une
+    gestion flexible et sécurisée.
     """
 
     help = "Start the Epic Events program."
@@ -18,11 +35,10 @@ class Command(EpicEventsCommand):
 
     def handle(self, *args, **options):
         """
-        Handle the command execution.
+        Gère l'exécution de la commande.
 
-        Displays the start menu and handles user input to navigate to
-        different sections
-        of the Epic Events program.
+        Affiche le menu de démarrage et gère l'entrée de l'utilisateur pour
+        naviguer vers différentes sections du programme Epic Events.
         """
         super().handle(*args, **options)
 

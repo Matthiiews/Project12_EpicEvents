@@ -16,33 +16,34 @@ ENDC = "\033[0m"  # to reset the style coded before
 def style_text_display(text, color=ENDC, bold=False, underline=False,
                        end="\n"):
     """
-    Styles the provided text with the specified color
-    and/or boldness and/or underlines and prints it.
+    Stylise le texte fourni avec la couleur spécifiée et/ou en gras et/ou
+    souligné et l'affiche.
 
     Args:
-        text (str): The text to be styled and displayed.
-        color (str, optional): The color to apply to the text.
-        Defaults to None.
-        bold (bool, optional): Whether to apply bold formatting to the text.
-        Defaults to False.
-        underline (bool, optional): To underline the text. Defaults to False.
-        end (str, optional): Defines the spaces or non-spaces for the
-        print-statement. Default is linebreak. "\n".
+        text (str): Le texte à styliser et afficher.
+        color (str, optionnel): La couleur à appliquer au texte. Par défaut,
+        None.
+        bold (bool, optionnel): Indique si le texte doit être en gras. Par
+        défaut, False.
+        underline (bool, optionnel): Indique si le texte doit être souligné.
+        Par défaut, False.
+        end (str, optionnel): Définit les espaces ou les non-espaces pour
+        l'instruction d'impression. Par défaut, saut de ligne.
     """
     style = f"{color}"
     if bold:
         style += f"{BOLD}"
     if underline:
         style += f"{UNDERLINE}"
-    print(f"{style}{text}{ENDC}", end=end)  # reset the color
+    print(f"{style}{text}{ENDC}", end=end)  # réinitialise la couleur
 
 
 def _display_menu_headline(text):
     """
-    PRIVATE FUNCTION, which styles the headline of the main menu.
+    FONCTION PRIVÉE, qui stylise le titre du menu principal.
 
-    Args:
-        text (str): The text will be the headline of the main menu.
+    Args :
+        text (str): Le texte sera le titre du menu principal.
     """
     style_text_display(f"{'':^2}** {text} **{'':^2}", color=MAGENTA, bold=True,
                        underline=True, end="\n\n")
@@ -50,26 +51,27 @@ def _display_menu_headline(text):
 
 def _display_menu_title(text):
     """
-    PRIVATE FUNCTION, which styles the title of the menu.
+    FONCTION PRIVÉE, qui stylise le titre du menu.
 
-    Args:
-        text (str): The text will be the title of the menu.
+    Args :
+        text (str): Le texte sera le titre du menu.
     """
     style_text_display(f"{'':^3}*** {text} ***{'':^3}", color=CYAN, bold=True)
 
 
 def _display_choices(option, text, color=BLUE):
     """
-    PRIVATE FUNCTION, display the possible choices with information to choose
-    in menu.
-        exm: [1] Manage the employees ([option] text)
-    Args:
-        option (int): Int-value which is defined in the menu-function,
-        beginning from 0. exp: [1].
-        text (str): After the option value, there is a text as information,
-        to choose.
-        color (str, optional): The color of the option can be set.
-        Default is Blue.
+    FONCTION PRIVÉE, affiche les choix possibles avec des informations pour
+    choisir dans le menu.
+    ex. : [1] Gérer les employés ([option] texte)
+
+    Args :
+        option (int) : Valeur entière définie dans la fonction de menu,
+        commençant à partir de 0. exp : [1].
+        text (str) : Après la valeur de l'option, il y a un texte en tant
+        qu'information, pour choisir.
+        color (str, facultatif) : La couleur de l'option peut être définie.
+        Par défaut, c'est le bleu.
     """
     style_text_display(f"{'':^4}[{option}] ", color=color, bold=True, end="")
     style_text_display(f"{text}", bold=True)
@@ -77,16 +79,17 @@ def _display_choices(option, text, color=BLUE):
 
 def display_new_line():
     """
-    Display a new line
+    Affiche une nouvelle ligne.
     """
     print()
 
 
 def _create_start_menu_choices(menu_choices):
     """
-    creates the menu choices for the start menu.
-    Args:
-        menu_choices (dict): contains the choices the user has.
+    Crée les options de menu pour le menu de démarrage.
+    Args :
+        menu_choices (dict) : contient les choix disponibles pour
+        l'utilisateur.
     """
     for key, choice_desc in menu_choices.items():
         if isinstance(choice_desc, list) and len(choice_desc) == 2:
@@ -99,10 +102,12 @@ def _create_start_menu_choices(menu_choices):
 
 def _create_menu_choices(menu_choices, app):
     """
-    creates the menu choices.
-    Args:
-        menu_choices (dict): contains the choices the user has.
-        app (str): to determine to display the choices in a different manner.
+    Crée les choix de menu.
+    Args :
+        menu_choices (dict) : contient les choix disponibles pour
+        l'utilisateur.
+        app (str) : pour déterminer l'affichage des choix de manière
+        différente.
     """
     for key, choice_desc in menu_choices.items():
         if isinstance(choice_desc, list) and len(choice_desc) == 2:
@@ -115,17 +120,16 @@ def _create_menu_choices(menu_choices, app):
 
 def get_start_menu(title):
     """
-    Displays the start menu and prompts the user for input.
+    Affiche le menu de démarrage et invite l'utilisateur à saisir une entrée.
+    Args :
+        title (str) : Le titre du menu.
 
-    Args:
-        title (str): The title of the menu.
+    Returns :
+        int : Le choix de l'utilisateur.
 
-    Returns:
-        int: The user's choice.
-
-    Raises:
-        ValueError: If the user enters a choice that is not an integer or not
-        in the available choices.
+    Raises :
+        ValueError : Si l'utilisateur entre un choix qui n'est pas un entier
+        ou qui n'est pas parmi les choix disponibles.
     """
     possible_choices = {
         1: "employees",
@@ -153,18 +157,17 @@ def get_start_menu(title):
 
 def get_app_menu(app, user):
     """
-    Displays the menu and prompts the user for input.
+    Affiche le menu et invite l'utilisateur à saisir une entrée.
+    Args :
+        app (str) : Le titre du menu.
+        user (instance d'utilisateur) : Pour déterminer quel menu afficher.
 
-    Args:
-        app (str): The title of the menu.
-        user (user instance): To determine what menu to display.
+    Returns :
+        int : Le choix de l'utilisateur.
 
-    Returns:
-        int: The user's choice.
-
-    Raises:
-        ValueError: If the user enters a choice that is not an integer or not
-        in the available choices.
+    Raises :
+        ValueError : Si l'utilisateur entre un choix qui n'est pas un entier
+        ou qui n'est pas parmi les choix disponibles.
     """
     choices_by_role_and_app = {
         "SA": {
@@ -176,22 +179,22 @@ def get_app_menu(app, user):
                 4: ["quit", "Go back to Main Menu"],
                 5: ["Logout", "logout"],
                 6: ["quit", "Quit program"]
-            },  # filter possible
+            },  # Filtre possible.
             "contract": {
                 1: "List and filter",
                 2: ["quit", "Go back to Main Menu"],
                 3: ["Logout", "logout"],
                 4: ["quit", "Quit program"]
-            },  # filter possible because MA creates the contract with
-            # employee of client
+            },  # Filtre possible car le MA crée le contrat avec l'employé du
+                # client.
             "event": {
                 1: "List and filter",
                 2: "Create",
                 3: ["quit", "Go back to Main Menu"],
                 4: ["Logout", "logout"],
                 5: ["quit", "Quit program"]
-            },  # filter possible because employee created the client, is
-            # associated with contract
+            },  # Filtrer possible car l'employé a créé le client, est associé
+            # au contrat.
         },
         "SU": {
             "employee": {
@@ -230,7 +233,8 @@ def get_app_menu(app, user):
                 6: ["Logout", "logout"],
                 7: ["quit", "Quit program"]
 
-            },  # can filter employees, create filter logic inside List
+            },  # Peut filtrer les employés, créer une logique de filtre à
+            # l'intérieur de la Liste.
             "client": {
                 1: "List and filter",
                 2: "Delete",
@@ -246,8 +250,8 @@ def get_app_menu(app, user):
                 5: ["quit", "Go back to Main Menu"],
                 6: ["Logout", "logout"],
                 7: ["quit", "Quit program"]
-            },  # can filter contracts, but user_queryset not useful because
-            # SA employee
+            },  # Peut filtrer les contrats, mais user_queryset n'est pas
+            # utile parce que l'employé SA.
             "event": {
                 1: "List and filter",
                 2: "Update",
@@ -259,7 +263,7 @@ def get_app_menu(app, user):
         },
     }
 
-    # Retrieve the possible choices for the given role and app
+    # Récupérer les choix possibles pour le rôle et l'application donné.
     possible_choices = choices_by_role_and_app.get(
         user.employee_users.role, {}).get(app, {})
 

@@ -12,13 +12,47 @@ from events.models import Event
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed for
-    updating event details within a system. It is specifically tailored for
-    users with "SA" and "MA" permissions, indicating that it is intended for
-    sales and management.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour mettre à jour les détails des événements dans un système. Elle est
+    spécifiquement conçue pour les utilisateurs ayant les permissions "SA" et
+    "MA", ce qui indique qu'elle est destinée aux ventes et à la gestion.
+
+    - `help` : Une chaîne décrivant l'objectif de la commande, qui est de
+    demander les détails nécessaires pour mettre à jour un événement.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "UPDATE".
+    - `permissions` : Une liste de rôles autorisés à exécuter cette commande,
+    dans ce cas, seuls les "SA" (ventes) et "MA" (gestion) ont la permission.
+
+    Les méthodes clés de cette classe incluent :
+    - `get_queryset` : Initialise le queryset pour les objets `Event`,
+    sélectionnant les objets `Client` associés pour chaque événement.
+    - `get_create_model_table` : Génère un tableau de tous les événements pour
+    aider l'utilisateur à sélectionner un événement à mettre à jour.
+    - `get_requested_model` : Invite l'utilisateur à saisir l'adresse e-mail
+    du client de l'événement qu'ils souhaitent mettre à jour et affiche les
+    détails de l'événement pour confirmation.
+    - `get_fields_to_update` : Invite l'utilisateur à sélectionner les champs
+    qu'il souhaite mettre à jour.
+    - `get_available_fields` : Associe les champs sélectionnés à leurs
+    méthodes de saisie correspondantes pour la collecte de données.
+    - `get_data` : Collecte les nouvelles données pour les champs sélectionnés
+    par l'utilisateur.
+    - `make_changes` : Met à jour l'événement avec les nouvelles données.
+    - `collect_changes` : Confirme la mise à jour de l'événement et affiche un
+    message de succès.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des événements.
+
+    Cette classe encapsule la fonctionnalité de mise à jour des détails de
+    l'événement, garantissant que seuls les utilisateurs ayant les permissions
+    appropriées peuvent effectuer cette action. Elle utilise la classe
+    `EpicEventsCommand` pour les fonctionnalités communes de commande, telles
+    que l'affichage des invitations à saisir et la gestion de la saisie
+    utilisateur.
     """
 
-    help = "Prompts for details to update an event"
+    help = "Invite à fournir des détails pour mettre à jour un événement."
     action = "UPDATE"
     permissions = ["SU", "MA"]
 
@@ -150,7 +184,7 @@ class Command(EpicEventsCommand):
         Event.objects.filter(
             contract__client=self.object.contract.client).update(**data)
 
-        # Refresh the object from the database
+        # Actualise l'objet depuis la base de données.
         self.object.refresh_from_db()
 
         return self.object

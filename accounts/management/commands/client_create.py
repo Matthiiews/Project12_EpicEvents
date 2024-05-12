@@ -12,13 +12,47 @@ from accounts.models import Client
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed to
-    facilitate the creation of new clients within a system. It is specifically
-    tailored for users with "SA" permissions, indicating that it is intended
-    for sales.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour faciliter la création de nouveaux clients dans un système. Elle est
+    spécifiquement adaptée aux utilisateurs disposant des permissions "SA",
+    indiquant qu'elle est destinée aux ventes.
+
+    - `help` : Une chaîne décrivant l'objectif de la commande, qui consiste à
+    demander les détails nécessaires à la création d'un nouveau client.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "CREATE".
+    - `permissions` : Une liste des rôles autorisés à exécuter cette commande,
+    dans ce cas, seule "SA" (Ventes) a la permission.
+
+    Les principales méthodes de cette classe incluent :
+
+    - `get_queryset` : Initialise le queryset pour les objets `Client`,
+    en sélectionnant les objets `Employee` associés à chaque client.
+    - `get_create_model_table` : Génère des tables de tous les clients et un
+    sous-ensemble de clients liés à l'utilisateur actuel, affichant des
+    informations pertinentes telles que l'e-mail, le prénom, le nom de famille,
+    le nom de la société et l'employé.
+    - `get_data` : Invite l'utilisateur à saisir les détails pour créer un
+    nouveau client, capturant l'e-mail, le prénom, le nom de famille, le
+    numéro de téléphone et le nom de la société.
+    - `make_changes` : Tente de créer un nouvel objet `Client` avec les
+    données fournies, en l'associant à l'objet `Employee` de l'utilisateur
+    actuel. Gère les éventuelles `IntegrityError` en affichant un message
+    d'erreur et en redemandant à l'utilisateur de créer un client.
+    - `collect_changes` : Confirme la création d'un nouveau client et affiche
+    un message de réussite.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des clients.
+
+    Cette classe encapsule la fonctionnalité pour créer de nouveaux clients,
+    en veillant à ce que seuls les utilisateurs disposant des permissions
+    appropriées puissent effectuer cette action. Elle tire parti de la classe
+    `EpicEventsCommand` pour les fonctionnalités de commande communes, telles
+    que l'affichage des invites de saisie et la gestion de la saisie
+    utilisateur.
     """
 
-    help = "Prompts for details to create a new client."
+    help = "Demande les détails pour créer un nouveau client."
     action = "CREATE"
     permissions = ["SA"]
 
@@ -46,15 +80,15 @@ class Command(EpicEventsCommand):
             all_clients_data[f"Client {client.id}"] = client_data
 
             if client.employee.user == self.user:
-                # create a copy of 'client_date' otherwise the column
-                # 'Employee' is empty
+                # Créez une copie de 'client_date' sinon la colonne 'Employé'
+                # est vide.
                 client_data = client_data.copy()
                 client_data.pop("employee", None)
                 my_clients_data[f"Client {client.id}"] = client_data
 
         create_queryset_table(
             all_clients_data, "Clients", headers=self.headers["client"])
-        # Remove "employee" from headers
+        # Supprimez "employé" des en-têtes.
         create_queryset_table(
             my_clients_data, "my Clients", headers=self.headers["client"][0:5])
 

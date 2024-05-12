@@ -15,17 +15,32 @@ fake = Faker()
 
 class Command(DataCreateCommand):
     """
-    Command to create 24 employees with basic data. This command generates and
-    creates 24 employees with fake data. It assigns roles cyclically from a
-    predefined list of roles ("SA", "SU", "MA").
-    The command also generates random first names, last names, and emails for
-    each employee.
-    The password for each user is set to a default value. If there are any
-    integrity errors during the creation process, it handles them
-    appropriately.
+    Commande pour créer 24 employés avec des données de base. Cette commande
+    génère et crée 24 employés avec des données fictives. Elle attribue les
+    rôles cycliquement à partir d'une liste prédéfinie de rôles
+    ("SA", "SU", "MA"). La commande génère également des prénoms, des noms de
+    famille et des adresses e-mail aléatoires pour chaque employé. Le mot de
+    passe de chaque utilisateur est défini sur une valeur par défaut.
+    En cas d'erreurs d'intégrité pendant le processus de création, elles sont
+    gérées de manière appropriée.
+
+    Attributs :
+        help (str) : Description de la commande.
+
+    Méthods :
+        get_queryset(self) : Méthode de substitution réservée pour une
+        utilisation future.
+        create_fake_data(self) : Génère des données fictives pour 24 employés
+        et renvoie un dictionnaire avec ces données.
+        create_instances(self, data) : Crée des instances des modèles User et
+        Employee dans la base de données en utilisant les données fournies.
+
+    Raises :
+        IntegrityError : S'il y a une tentative de créer un employé qui viole
+        les contraintes d'intégrité de la base de données.
     """
 
-    help = "This command creates 24 employees as basic data."
+    help = "Cette commande crée 24 employés en tant que données de base."
 
     def get_queryset(self):
         pass
@@ -39,7 +54,7 @@ class Command(DataCreateCommand):
             last_name = fake.last_name()
             email = f"{first_name.lower()}.{last_name.lower()}@mail.com"
 
-            # Use modulo operation to cycle through the roles
+            # Utilisez l'opération de modulo pour parcourir les rôles en cycle.
             role = roles_choices[(i - 1) % len(roles_choices)]
             employee = {
                 "email": email,
@@ -68,7 +83,7 @@ class Command(DataCreateCommand):
                                     role=value["role"])
                 employees_to_create.append(employee)
 
-            # Bulk create users and employees
+            # Créez en masse des utilisateurs et des employés.
             UserModel.objects.bulk_create(users_to_create)
             Employee.objects.bulk_create(employees_to_create)
 

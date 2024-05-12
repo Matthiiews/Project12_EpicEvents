@@ -7,17 +7,36 @@ from django.utils.translation import gettext_lazy as _
 
 class UserManager(BaseUserManager):
     """
-    Custom manager for User model.
-    The `UserManager` class is a custom manager for the `User` model,
-    extending Django's.
-    `BaseUserManager`. It provides methods for creating users and superusers,
-    ensuring that email addresses are normalized and that superusers have the
-    appropriate permissions set.
+    Gestionnaire personnalisé pour le modèle Utilisateur.
+    La classe `UserManager` est un gestionnaire personnalisé pour le modèle
+    `User`, étendant celui de Django, `BaseUserManager`. Elle fournit des
+    méthodes pour créer des utilisateurs et des superutilisateurs, en veillant
+    à ce que les adresses e-mail soient normalisées et que les
+    superutilisateurs aient les autorisations appropriées.
+
+    - `create_user`: Crée un nouvel utilisateur avec l'e-mail et le mot de
+    passe donnés.
+    Il normalise l'adresse e-mail et définit le mot de passe. Cette méthode est
+    conçue pour gérer la création d'utilisateurs réguliers.
+    - `create_superuser`: Crée un nouveau superutilisateur avec l'e-mail et le
+    mot de passe donnés. Il veille à ce que les superutilisateurs aient
+    `is_staff`, `is_superuser`, et `is_active` définis sur `True`.
+    Cette méthode est spécifiquement pour créer des superutilisateurs avec
+    toutes les autorisations.
+
+    Ces méthodes sont essentielles pour gérer les comptes utilisateur dans une
+    application Django, fournissant un moyen sécurisé et flexible de gérer
+    l'authentification et l'autorisation des utilisateurs. En utilisant des
+    méthodes personnalisées pour créer des utilisateurs et des
+    superutilisateurs, le `UserManager` permet la mise en œuvre de logiques et
+    de validations personnalisées qui correspondent aux exigences spécifiques
+    de l'application.
     """
 
     def create_user(self, email, password, **extra_fields):
         """
-        Create and save a User with the given email and password.
+        Créer et enregistrer un utilisateur avec l'e-mail et le mot de passe
+        donné.
         """
         if not email:
             raise ValueError(_("The Email must bet set"))
@@ -34,7 +53,8 @@ class UserManager(BaseUserManager):
 
     def create_superuser(self, email, password, **extra_fields):
         """
-        Create and save a SuperUser with the given email and password.
+        Créer et enregistrer un superutilisateur avec l'e-mail et le mot de
+        passe donné.
         """
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)
@@ -49,12 +69,45 @@ class UserManager(BaseUserManager):
 
 class User(AbstractUser):
     """
-    Custom User model extending AbstractUser.
-    This class `User` is a custom user model for Django applications, designed
-    to use email addresses as the primary identifier for user authentication
-    instead of traditional usernames.
-    It extends `AbstractUser` to inherit all the fields and methods necessary
-    for user management, including authentication and authorization.
+    Cette classe `User` est un modèle utilisateur personnalisé pour les
+    applications Django, conçu pour utiliser les adresses e-mail comme
+    identifiant principal pour l'authentification des utilisateurs au lieu des
+    noms d'utilisateur traditionnels. Elle étend `AbstractUser` pour hériter
+    de tous les champs et méthodes nécessaires à la gestion des utilisateurs,
+    y compris l'authentification et l'autorisation.
+
+    - `username` : Ce champ est défini sur `None` pour indiquer que les
+    adresses e-mail seront utilisées pour l'authentification au lieu des noms
+    d'utilisateur.
+    - `email` (Champ d'e-mail) : Un `Champ d'e-mail` marqué comme unique,
+    assurant que chaque adresse e-mail ne peut être associée qu'à un seul
+    compte utilisateur.
+
+    - `USERNAME_FIELD` : Spécifie le champ à utiliser comme identifiant unique
+    pour l'authentification, qui est défini sur `'email'`.
+    - `REQUIRED_FIELDS` : Spécifie les champs supplémentaires qui doivent être
+    remplis lors de la création d'un utilisateur. Comme le champ e-mail est
+    requis et unique, cette liste est vide.
+
+    - `objects` : Affecte le gestionnaire personnalisé `UserManager` pour
+    gérer la création d'instances d'utilisateur et de superutilisateur.
+
+    La classe `UserManager`, `UserManager`, est un gestionnaire personnalisé
+    pour le modèle `User`. Elle fournit des méthodes pour créer des
+    utilisateurs et des superutilisateurs, en veillant à ce que les adresses
+    e-mail soient normalisées et que les superutilisateurs aient les
+    autorisations appropriées définies.
+
+    - `create_user` : Crée un nouvel utilisateur avec l'e-mail et le mot de
+    passe donnés. Il normalise l'adresse e-mail et définit le mot de passe.
+    - `create_superuser` : Crée un nouveau superutilisateur avec l'e-mail et
+    le mot de passe donnés. Il veille à ce que les superutilisateurs aient
+    `is_staff`, `is_superuser`, et `is_active` définis sur `True`.
+
+    Ce modèle utilisateur personnalisé permet un flux d'authentification plus
+    simple, où les utilisateurs se connectent en utilisant leurs adresses
+    e-mail, et il fournit une base flexible pour personnaliser les
+    fonctionnalités de gestion des utilisateurs dans les applications Django.
     """
 
     username = None
@@ -67,18 +120,38 @@ class User(AbstractUser):
 
     def __str__(self):
         """
-        String representation of User object.
+        Représentation textuelle de l'objet Utilisateur.
         """
         return self.email
 
 
 class Employee(models.Model):
     """
-    Employee model representing an employee.
-    The `Employee` model represents employees within the system, with
-    different roles such as Sales, Support, and Management.
-    Each employee is associated with a user account, allowing for
-    authentication and authorization based on their role.
+    Le modèle `Employé` représente les employés dans le système, avec
+    différents rôles tels que Ventes, Support et Gestion. Chaque employé est
+    associé à un compte utilisateur, permettant l'authentification et
+    l'autorisation en fonction de leur rôle.
+
+    - `CHOIX_DE_ROLE` : Un dictionnaire définissant les rôles possibles qu'un
+    employé peut avoir, y compris Ventes, Support et Gestion.
+
+    - `utilisateur` (Clé étrangère) : Une relation un à un avec le modèle
+    `Utilisateur`, établissant un lien entre un employé et son compte
+    utilisateur. Ce champ est crucial pour l'authentification et
+    l'autorisation.
+    - `prenom` et `nom` (Charfield) : Champs Char pour stocker le prénom et
+    le nom de famille de l'employé.
+    - `role` (Charfield) : Un champ char avec des choix définis par
+    `CHOIX_DE_ROLE`, spécifiant le rôle de l'employé dans l'organisation.
+
+    Les méthodes de propriété incluent :
+    - `obtenir_nom_complet` : Une méthode de propriété qui retourne le nom
+    complet de l'employé, combinant le prénom et le nom de famille.
+    - `obtenir_adresse_email` : Une méthode de propriété qui récupère
+    l'adresse e-mail associée à l'utilisateur.
+
+    La méthode `__str__` retourne une représentation textuelle de l'employé,
+    affichant leur nom complet et leur rôle.
     """
 
     SALES = "SA"
@@ -123,11 +196,37 @@ class Employee(models.Model):
 
 class Client(models.Model):
     """
-    Client model representing a client.
-    The `Client` model represents clients associated with employees within
-    the system.
-    Each client is linked to an employee, indicating who is responsible for
-    their account.
+    Modèle Client représentant un client.
+    Le modèle `Client` représente les clients associés aux employés dans le
+    système. Chaque client est lié à un employé, indiquant qui est responsable
+    de leur compte.
+
+    - `employe` (Clé étrangère) : Une relation de clé étrangère vers le modèle
+    `Employé`, reliant chaque client à son employé assigné.
+    - `email` (Champ d'e-mail) : Un champ d'e-mail qui stocke l'adresse e-mail
+    du client, assurant l'unicité pour éviter les doublons d'entrées clients.
+    - `prenom`, `nom`, `telephone` et `nom_de_la_societe` (Charfield) :
+    Champs Char pour stocker les informations personnelles du client et le nom
+    de la société.
+    - `creer_le` et `derniere_mise_a_jour` : Champs DateTime qui enregistrent
+    automatiquement les temps de création et de dernière mise à jour d'un
+    enregistrement client.
+
+    Les méthodes de propriété incluent :
+    - `obtenir_nom_complet` : Une méthode de propriété qui retourne le nom
+    complet du client, combinant le prénom et le nom de famille.
+    - `obtenir_adresse_email` : Une méthode de propriété qui récupère
+    l'adresse e-mail de l'employé associé.
+
+    La méthode `__str__` retourne une représentation textuelle du client,
+    affichant leur nom complet.
+
+    Ces modèles sont essentiels pour gérer les employés et les clients au sein
+    d'une application Django, fournissant un moyen structuré de stocker et
+    d'accéder aux informations utilisateur et client. Les relations entre les
+    modèles garantissent que chaque client est associé à un employé,
+    facilitant le contrôle d'accès basé sur les rôles et la gestion des
+    données.
     """
     employee = models.ForeignKey("accounts.Employee", on_delete=models.CASCADE,
                                  related_name="client_employee",
@@ -147,12 +246,12 @@ class Client(models.Model):
     @property
     def get_full_name(self):
         """
-        Get the full name of the client.
+        Obtenir le nom complet du client.
         """
         return f"{self.first_name} {self.last_name}"
 
     def __str__(self):
         """
-        String representation of Client object.
+        Représentation textuelle de l'objet Client.
         """
         return f"{self.get_full_name} ({self.employee.get_full_name})"

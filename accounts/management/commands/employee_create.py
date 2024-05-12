@@ -16,13 +16,47 @@ UserModel = get_user_model()
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed to
-    facilitate the creation of new employees within a system. It is
-    specifically tailored for users with "MA" permissions, indicating that it
-    is intended for management.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour faciliter la création de nouveaux employés dans un système. Elle est
+    spécifiquement adaptée aux utilisateurs disposant des permissions "MA", ce
+    qui indique qu'elle est destinée à la gestion.
+
+    - `help` : Une chaîne décrivant l'objectif de la commande, qui consiste à
+    demander les détails nécessaires pour créer un nouvel employé.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "CREATE".
+    - `permissions` : Une liste des rôles autorisés à exécuter cette commande,
+    dans ce cas, seul "MA" (Management) a la permission.
+
+    Les principales méthodes de cette classe incluent :
+
+    - `get_queryset` : Initialise le queryset pour les objets `Employee`, en
+    sélectionnant les objets `User` associés à chaque employé.
+    - `get_create_model_table` : Génère des tables de tous les employés et d'un
+    sous-ensemble d'employés liés à l'utilisateur actuel, affichant des
+    informations pertinentes telles que l'e-mail, le prénom, le nom de famille
+    et le rôle.
+    - `get_data` : Invite l'utilisateur à saisir les détails pour créer un
+    nouvel employé, capturant l'e-mail, le mot de passe, le prénom, le nom de
+    famille et le rôle.
+    - `make_changes` : Tente de créer un nouvel objet `User` et un nouvel objet
+    `Employee` avec les données fournies. Gère les éventuelles `IntegrityError`
+    en affichant un message d'erreur et en demandant à l'utilisateur de créer à
+    nouveau un employé.
+    - `collect_changes` : Confirme la création d'un nouvel employé et affiche
+    un message de réussite.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des employés.
+
+    Cette classe encapsule la fonctionnalité pour créer de nouveaux employés,
+    en veillant à ce que seuls les utilisateurs disposant des permissions
+    appropriées puissent effectuer cette action. Elle tire parti de la classe
+    `EpicEventsCommand` pour les fonctionnalités de commande communes, telles
+    que l'affichage des invites de saisie et la gestion de la saisie
+    utilisateur.
     """
 
-    help = "Prompts to create a new employee."
+    help = "Demande de saisir les détails pour créer un nouvel employé."
     action = "CREATE"
     permissions = ["MA"]
 

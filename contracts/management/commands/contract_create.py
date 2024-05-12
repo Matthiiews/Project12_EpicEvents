@@ -16,13 +16,48 @@ from contracts.models import Contract
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed to
-    facilitate the creation of new contract within a system. It is specifically
-    tailored for users with "MA" permissions, indicating that it is intended
-    for management.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour faciliter la création de nouveaux contrats au sein d'un système.
+    Elle est spécifiquement adaptée aux utilisateurs ayant les permissions
+    "MA", indiquant qu'elle est destinée à la gestion.
+
+    - `help` : Une chaîne de caractères décrivant le but de la commande, qui
+    est de demander les détails nécessaires pour créer un nouveau contrat.
+    - `action` : Une chaîne de caractères indiquant l'action associée à cette
+    commande, définie sur "CREATE".
+    - `permissions` : Une liste de rôles autorisés à exécuter cette commande,
+    dans ce cas, seul "MA" (Management) a la permission.
+
+    Les méthodes clés de cette classe comprennent :
+
+    - `get_queryset` : Initialise le queryset pour les objets `Contract`,
+    sélectionnant les objets `Client` associés à chaque client.
+    - `get_create_model_table` : Génère des tables de tous les contrats et un
+    sous-ensemble de clients associés à l'employé avec le rôle ('SA') qui est
+    responsable du client, affichant des informations pertinentes telles que
+    l'email du client, les coûts totaux, le montant déjà payé, l'état du
+    contrat et l'employé.
+    - `get_data` : Demande à l'utilisateur de saisir les détails pour créer un
+    nouveau contrat, capturant l'email du client, les coûts totaux, le montant
+    payé et l'état du contrat.
+    - `make_changes` : Valide si le client existe sinon il affiche un message
+    d'erreur. Tente de créer un nouvel objet `Contract` avec les données
+    fournies, en l'associant à l'objet `Employee` client responsable.
+    Et vérifie si le contrat existe déjà.
+    - `collect_changes` : Confirme la création d'un nouveau contrat et affiche
+    un message de succès.
+    - `go_back` : Offre la possibilité de revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des contrats.
+
+    Cette classe encapsule la fonctionnalité pour créer de nouveaux contrats,
+    en veillant à ce que seuls les utilisateurs ayant les permissions
+    appropriées puissent effectuer cette action. Elle tire parti de la classe
+    `EpicEventsCommand` pour les fonctionnalités de commande communes, telles
+    que l'affichage des invitations de saisie et la gestion de la saisie
+    utilisateur.
     """
 
-    help = "Prompts for details to create a new contract."
+    help = "Demande les détails pour créer un nouveau contrat."
     action = "CREATE"
     permissions = ["MA"]
 
@@ -64,8 +99,8 @@ class Command(EpicEventsCommand):
 
     def make_changes(self, data):
         validated_data = dict()
-        # verify if the contract already exists, client + contract
-        # OneToOne instead of ForeignKey? client
+        # Vérifie si le contrat existe déjà, client + contrat
+        # OneToOne au lieu de ForeignKey? client
 
         client = Client.objects.filter(email=data["client"]).first()
         if not client:
@@ -76,10 +111,10 @@ class Command(EpicEventsCommand):
         validated_data["client"] = client
         validated_data["employee"] = client.employee
 
-        # remove client and employee for data:
+        # Supprime le client et l'employé pour les données :
         data.pop("client", None)
 
-        # verify if the contract already exists:
+        # Vérifie si le contrat existe déjà :
         contract_exists = Contract.objects.filter(
             client=validated_data["client"]).exists()
         if contract_exists:

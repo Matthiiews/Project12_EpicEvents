@@ -11,11 +11,54 @@ from accounts.models import Client
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed to list
-    all clients with an option to filter the list based on user input. It is
-    accessible to users with "SA", "SU", or "MA" permissions.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour répertorier tous les clients avec une option pour filtrer la liste en
+    fonction de l'entrée de l'utilisateur. Elle est accessible aux
+    utilisateurs disposant des permissions "SA", "SU" ou "MA".
+
+    - `help` : Une chaîne décrivant l'objectif de la commande, qui consiste à
+    répertorier tous les clients et éventuellement les filtrer.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "LIST_FILTER".
+    - `permissions` : Une liste des rôles autorisés à exécuter cette commande,
+    dans ce cas, "SA" (Ventes), "SU" (Support) et "MA" (Management) ont la
+    permission.
+
+    Les principales méthodes de cette classe incluent :
+
+    - `get_queryset` : Initialise le queryset pour les objets `Client`, en
+    sélectionnant les objets `Employee` associés à chaque client.
+    - `get_create_model_table` : Génère une table de tous les clients,
+    affichant des informations pertinentes telles que l'e-mail, le prénom, le
+    nom de famille, le nom de la société et l'employé.
+    - `get_data` : Invite l'utilisateur à décider s'il souhaite filtrer les
+    clients, capturant leur choix.
+    - `user_choice` : Gère le choix de l'utilisateur de filtrer les clients,
+    avec une gestion spéciale pour le rôle "SA" pour permettre le filtrage
+    sans messages d'interdiction de permission.
+    - `choose_attributes` : Affiche les champs disponibles pour le filtrage et
+    permet à l'utilisateur de sélectionner les champs par lesquels il souhaite
+    filtrer.
+    - `request_field_selection` : Invite l'utilisateur à sélectionner des
+    champs spécifiques pour le filtrage et à choisir l'ordre
+    (ascendant ou descendant).
+    - `get_user_queryset` : Filtre le queryset en fonction de la sélection de
+    l'utilisateur et de sa préférence d'ordre.
+    - `filter_selected_fields` : Applique les filtres et l'ordre sélectionnés
+    au queryset, le préparant pour l'affichage.
+    - `display_result` : Affiche la liste filtrée et ordonnée des clients à
+    l'utilisateur.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des clients.
+
+    Cette classe encapsule la fonctionnalité pour répertorier et
+    éventuellement filtrer les clients, en veillant à ce que seuls les
+    utilisateurs disposant des permissions appropriées puissent effectuer ces
+    actions. Elle tire parti de la classe `EpicEventsCommand` pour les
+    fonctionnalités de commande communes, telles que l'affichage des invites
+    de saisie et la gestion de la saisie utilisateur..
     """
-    help = "Lists all clients."
+    help = "Liste de tous les clients."
     action = "LIST_FILTER"
     permissions = ["SA", "SU", "MA"]
 

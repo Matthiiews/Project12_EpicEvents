@@ -20,41 +20,42 @@ from cli.utils_token_mixin import JWTTokenMixin
 
 class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     """
-    Custom management command for handling epic events.
+    Commande de gestion personnalisée pour gérer des événements épiques.
 
-    Class attributes:
-        action (str): The action to perform (LIST, CREATE, UPDATE, DELETE).
-        permissions (str): The role required to access the command.
+    Attributs de classe :
+        action (str): L'action à effectuer (LIST, CREATE, UPDATE, DELETE).
+        permissions (str): Le rôle requis pour accéder à la commande.
 
-    Instance attributes:
-        object (Any): The object to be manipulated by the command.
-        queryset (Any): The queryset is used only in "action = 'LIST'" and
-        requests the queryset of
-            a model.
-        fields (list): A list of fields to update.
-        fields_to_update (list): A list of fields that need to be updated.
-        available_fields (dict): A dictionary of available fields.
-        update_table (list): A list representing the update table.
+    Attributs d'instance :
+        object (Any): L'objet à manipuler par la commande.
+        queryset (Any): Le queryset est utilisé uniquement lorsque "action =
+        'LIST'" et demande le queryset d'un modèle.
+        fields (list): Une liste de champs à mettre à jour.
+        fields_to_update (list): Une liste de champs qui doivent être mis à
+        jour.
+        available_fields (dict): Un dictionnaire de champs disponibles.
+        update_table (list): Une liste représentant la table de mise à jour.
 
-    Methods:
-        __init__(self, *args, **options): Initializes the command with options.
-        handle(self): The main method to execute the command's action.
+    Méthodes :
+        __init__(self, *args, **options): Initialise la commande avec des
+        options.
+        handle(self): La méthode principale pour exécuter l'action de la
+        commande.
 
-    Note:
-        - Ensure the `action` attribute is set to one of 'LIST', 'CREATE',
-        'UPDATE', 'DELETE'.
-        - The `permissions` attribute should be set to the role required to
-        execute the command.
-
+    Note :
+        - Assurez-vous que l'attribut `action` est défini sur l'une des
+        valeurs suivantes : 'LIST', 'CREATE', 'UPDATE', 'DELETE'.
+        - L'attribut `permissions` devrait être défini sur le rôle requis pour
+        exécuter la commande.
     """
 
-    help = "Custom BaseCommand for handling epic events"
+    help = "BaseCommand personnalisée pour gérer des événements épiques"
     action = None
     permissions = None
 
     def __init__(self, *args, **options):
         """
-        Initialize the subclass attributes.
+        Initialiser les attributs de sous-classe.
         """
         super().__init__(*args, **options)
         self.available_fields = dict()
@@ -81,26 +82,26 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def text_input(cls, label, required=True):
         """
-        Prompts the user for text/string input and handles required fields.
+        Demande à l'utilisateur une saisie de texte et gère les champs requis.
 
-        This method displays a prompt to the user with a given label and
-        optionally marks the field as required. If the field is marked as
-        required, the method ensures that the user provides a non-empty
-        input. If the user does not provide an input or enters only whitespace,
-        the method calls 'start' command and prints a blank line. If the
-        field is not required or the user provides a valid input, the method
-        returns the input value.
+        Cette méthode affiche une invite à l'utilisateur avec un label donné
+        et marque éventuellement le champ comme requis. Si le champ est marqué
+        comme requis, la méthode s'assure que l'utilisateur fournit une entrée
+        non vide. Si l'utilisateur ne fournit pas d'entrée ou entre seulement
+        des espaces, la méthode appelle la commande 'start' et imprime une
+        ligne vide. Si le champ n'est pas requis ou si l'utilisateur fournit
+        une entrée valide, la méthode renvoie la valeur d'entrée.
 
         Args:
-            label (str): The label to display next to the input prompt.
-            required (bool, optional): Whether the input field is required.
-            Defaults to True.
+            label (str): Le label à afficher à côté de l'invite de saisie.
+            required (bool, facultatif): Indique si le champ de saisie est
+            requis. Par défaut, True.
 
         Returns:
-            str: The user's input as a string.
+            str: La saisie de l'utilisateur en tant que chaîne de caractères.
 
         Raises:
-            ValueError: If the input is required but not provided.
+            ValueError: Si la saisie est requise mais non fournie.
         """
         original_label = label
 
@@ -118,22 +119,20 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def int_input(cls, label, required=True):
         """
-        Prompts the user for number/int input and handles required fields.
-        Exit of function
-        possible with '' or ' '.
+        Demande à l'utilisateur une saisie de nombre/entier et gère les champs
+        requis. La fonction peut être quittée avec '' ou ' '.
 
         Args:
-            label (str): The label to display next to the input prompt.
-            required (bool, optional): Whether the input field is required.
-            Defaults to True.
+            label (str): Le label à afficher à côté de l'invite de saisie.
+            required (bool, facultatif): Indique si le champ de saisie est
+            requis. Par défaut, True.
 
         Returns:
-            int: The user's input as an int.
+            int: La saisie de l'utilisateur en tant qu'entier.
 
         Notes:
-            uses a ValueError if the input of user is '', the 'start'-command
-            will be called to
-            exit the function.
+            utilise une ValueError si la saisie de l'utilisateur est '', la
+            commande 'start' sera appelée pour quitter la fonction.
         """
         original_label = label
 
@@ -152,18 +151,20 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def decimal_input(cls, label, required=True):
         """
-        Prompts the user for decimal/float input and handles required fields.
+        Demande à l'utilisateur une saisie de nombre décimal/à virgule
+        flottante et gère les champs requis.
 
         Args:
-            label (str): The label to display next to the input prompt.
-            required (bool, optional): Whether the input field is required.
-            Defaults to True.
+            label (str): Le label à afficher à côté de l'invite de saisie.
+            required (bool, facultatif): Indique si le champ de saisie est
+            requis. Par défaut, True.
 
         Returns:
-            float: The user's input as a decimal/float.
+            float: La saisie de l'utilisateur en tant que nombre décimal/à
+            virgule flottante.
 
         Raises:
-            InvalidOperation: If the input is other than decimal.
+            InvalidOperation: Si la saisie n'est pas un nombre décimal.
         """
         original_label = label
 
@@ -184,22 +185,22 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def choice_str_input(cls, options, label, required=True):
         """
-        Prompts the user for one choice string input and handles required
-        fields.
+        Demande à l'utilisateur de faire un choix parmi des options sous forme
+        de chaîne de caractères et gère les champs requis.
 
         Args:
-            options (tuple): The options are the possible choices the user can
-            make.
-            label (str): The label to display next to the input prompt.
-            required (bool, optional): Whether the input field is required.
-            Defaults to True.
+            options (tuple): Les options sont les choix possibles que
+            l'utilisateur peut faire.
+            label (str): Le label à afficher à côté de l'invite de saisie.
+            required (bool, facultatif): Indique si le champ de saisie est
+            requis. Par défaut, True.
 
         Returns:
-            str: The user's input as a string.
+            str: La saisie de l'utilisateur sous forme de chaîne de caractères.
 
         Notes:
-            If the user enters '' or ' ' the program calls the 'start'-command
-            to exit.
+            Si l'utilisateur entre '' ou ' ', le programme appelle la commande
+            'start' pour sortir.
         """
         value = cls.text_input(label, required)
 
@@ -211,21 +212,22 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def choice_int_input(cls, options, label, required=True):
         """
-        Prompts the user for one choice int input and handles required fields.
+        Demande à l'utilisateur de faire un choix parmi des options sous forme
+        d'entier et gère les champs requis.
 
         Args:
-            options (tuple): The options are the possible choices the user can
-            make.
-            label (str): The label to display next to the input prompt.
-            required (bool, optional): Whether the input field is required.
-            Defaults to True.
+            options (tuple): Les options sont les choix possibles que
+            l'utilisateur peut faire.
+            label (str): Le label à afficher à côté de l'invite de saisie.
+            required (bool, facultatif): Indique si le champ de saisie est
+            requis. Par défaut, True.
 
         Returns:
-            int: The user's input as an int.
+            int: La saisie de l'utilisateur sous forme d'entier.
 
         Notes:
-            If the user enters '' or ' ' the program calls the 'start'-command
-            to exit.
+            Si l'utilisateur entre '' ou ' ', le programme appelle la commande
+            'start' pour sortir.
         """
         value = cls.int_input(label, required)
 
@@ -241,22 +243,22 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def multiple_choice_str_input(cls, options, label, required=True):
         """
-        Prompts the user for one or many choice(s) as string input(s) and
-        handles required fields.
+        Demande à l'utilisateur de faire un ou plusieurs choix sous forme de
+        saisie(s) de chaîne de caractères et gère les champs requis.
 
         Args:
-            options (tuple): The options are the possible choices the user can
-            make.
-            label (str): The label to display next to the input prompt.
-            required (bool, optional): Whether the input field is required.
-            Defaults to True.
+            options (tuple): Les options sont les choix possibles que
+            l'utilisateur peut faire.
+            label (str): Le label à afficher à côté de l'invite de saisie.
+            required (bool, facultatif): Indique si le champ de saisie est
+            requis. Par défaut, True.
 
         Returns:
-            list: The user's input as a list.
+            list: La saisie de l'utilisateur sous forme de liste.
 
         Notes:
-            If the user enters '' or ' ' the program calls the 'start'-command
-            to exit.
+            Si l'utilisateur entre '' ou ' ', le programme appelle la commande
+            'start' pour sortir.
         """
         values = cls.text_input(label, required)
 
@@ -265,27 +267,27 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def date_input(cls, label, required=True):
         """
-        Prompts the user for a date input in format: DD/MM/YYYY and handles
-        required fields.
+        Demande à l'utilisateur une saisie de date au format : JJ/MM/AAAA et
+        gère les champs requis.
 
         Args:
-            label (str): The label to display next to the input prompt.
-            required (bool, optional): Whether the input field is required.
-            Defaults to True.
+            label (str): Le libellé à afficher à côté de l'invite de saisie.
+            required (bool, facultatif): Indique si le champ de saisie est
+            requis. Par défaut, True.
 
         Returns:
-            date: The user's input as a date object.
+            date: La saisie de l'utilisateur sous forme d'objet date.
 
         Notes:
-            If the user enters '' or ' ' the program calls the 'start'-command
-            to exit.
+            Si l'utilisateur entre '' ou ' ', le programme appelle la commande
+            'start' pour sortir.
         """
         value = cls.text_input(label, required)  # DD/MM/YYYY
 
         try:
-            # save the given date in format: 2025-12-15 00:00:00
+            # Enregistre la date donnée au format : 2025-12-15 00:00:00
             value = datetime.strptime(value, "%d/%m/%Y")
-            # Make the datetime object timezone-aware
+            # Rend l'objet datetime conscient du fuseau horaire.
             value = make_aware(value)
         except ValueError:
             value = cls.date_input(label, required)
@@ -295,26 +297,26 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def email_input(cls, label, required=True):
         """
-        Prompts the user for a valid email input and handles required fields.
-        The build-in function
-        'validate_email' checks if the email input is a valid email address.
+        Récupère une adresse e-mail valide auprès de l'utilisateur et gère les
+        champs obligatoires. La fonction intégrée 'validate_email' vérifie si
+        l'adresse e-mail saisie est valide.
 
-        Args:
-            label (str): The label to display next to the input prompt.
-            required (bool, optional): Whether the input field is required.
-            Defaults to True.
+        Args :
+            - label (str) : Le libellé à afficher à côté de la demande de
+            saisie.
+            - required (bool, facultatif) : Indique si le champ de saisie est
+            obligatoire. Par défaut, True.
 
-        Returns:
-            email: The user's input as an email.
+        Returns :
+            - email : La saisie de l'utilisateur en tant qu'e-mail.
 
-        Raises:
-            ValidationError: Uses the ValidationError to recall the function
-            again if the email
-            address is wrong.
+        Raises :
+            - ValidationError : Utilise la ValidationError pour rappeler la
+            fonction à nouveau si l'adresse e-mail est incorrecte.
 
-        Notes:
-            If the user enters '' or ' ' the program calls the 'start'-command
-            to exit.
+        Notes :
+            - Si l'utilisateur entre '' ou ' ', le programme appelle la
+            commande 'start' pour quitter.
         """
         value = cls.text_input(label, required)
 
@@ -328,29 +330,29 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def password_input(cls, label, required=True):
         """
-        Prompts the user for a valid password input and handles required
-        fields. The build-in
-        function 'validate_password' checks if the password input fits the
-        'settings.AUTH_PASSWORD_VALIDATORS'
+        Demande à l'utilisateur une saisie de mot de passe valide et gère les
+        champs obligatoires. La fonction intégrée 'validate_password' vérifie
+        si la saisie du mot de passe correspond aux
+        'settings.AUTH_PASSWORD_VALIDATORS'.
 
-        Args:
-            label (str): The label to display next to the input prompt.
-            required (bool, optional): Whether the input field is required.
-            Defaults to True.
+        Args :
+            - label (str) : Le libellé à afficher à côté de la demande de
+            saisie.
+            - required (bool, facultatif) : Indique si le champ de saisie est
+            obligatoire. Par défaut, True.
 
-        Returns:
-            password: The user's input as a password.
+        Returns :
+            - password : La saisie de l'utilisateur en tant que mot de passe.
 
-        Raises:
-            ValidationError: Uses the ValidationError to recall the function
-            again if the password
-            does not fit the 'settings.AUTH_PASSWORD_VALIDATORS' criteria and
-            prints the error
-            message, why the password is not valid.
+        Raises :
+            - ValidationError : Utilise la ValidationError pour rappeler la
+            fonction à nouveau si le mot de passe ne correspond pas aux
+            critères 'settings.AUTH_PASSWORD_VALIDATORS' et affiche le message
+            d'erreur expliquant pourquoi le mot de passe n'est pas valide.
 
-        Notes:
-            If the user enters '' or ' ' the program calls the 'start'-command
-            to exit.
+        Notes :
+            - Si l'utilisateur entre '' ou ' ', le programme appelle la
+            commande 'start' pour quitter.
         """
         value = cls.text_input(label, required)
         # value = maskpass.askpass(prompt=label, mask="*") if required else
@@ -367,21 +369,23 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     @classmethod
     def display_input_title(cls, text):
         """
-        Display a title above the input.
+        Affiche un titre au-dessus de l'entrée.
 
         Args:
-             text (str): The text is the printed title above the input.
+             text (str): Le texte est le titre imprimé au-dessus de l'entrée.
         """
         style_text_display(f"{'':^3}{text} {'':^3}", color=BLUE, bold=True)
 
     def display_new_line(self):
-        """Prints a new line"""
+        """
+        Imprime une nouvelle ligne.
+        """
         print()
 
     # METHODS FOR ALL ACTIONS: (LIST, LIST_FILTER, CREATE, UPDATE AND DELETE):
     def get_instance_data(self):
         """
-        Within this method, create a table of the existing model instances.
+        Dans cette méthode, créez une table des instances de modèle existantes.
         """
         self.headers = {
             "employee": ["", "** Employee email **" "", "Name", "Role"],
@@ -417,65 +421,64 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     # METHODS FOR ACTIONS: (LIST_FILTER, CREATE, UPDATE AND DELETE):
     def get_data(self):
         """
-        Prompts the user for data/information.
+        Demande à l'utilisateur des données/informations.
 
         Returns:
-            dict: Gets the user's input and is stored in a dictionary.
+            dict: Obtient l'entrée de l'utilisateur et la stocke dans un
+            dictionnaire.
         """
         return dict()
 
     def go_back(self):
-        """Calls another Command."""
+        """
+        Appelle une autre commande.
+        """
         pass
 
     # METHODS FOR ACTIONS: CREATE, UPDATE AND DELETE:
     def make_changes(self, data):
         """
-        Verifies if the user's input from 'get_data' exists. Makes queries to
-        verify the user's
-        input from the database. Makes the changes: 'create', 'update' or
-        'delete'.
+        Vérifie si l'entrée de l'utilisateur de 'get_data' existe. Effectue
+        des requêtes pour vérifier l'entrée de l'utilisateur dans la base de
+        données. Effectue les modifications : 'create', 'update' ou 'delete'.
 
         Args:
-             data (dict): Contains the user's input from 'get_data' function.
+            data (dict): Contient l'entrée de l'utilisateur à partir de la
+            fonction 'get_data'.
 
-        Errors:
-            Throws different error messages, which are defined in
+        Errors :
+            Lance différents messages d'erreur, qui sont définis dans
             'cli/utils_messages.py'.
         """
         return None
 
     def collect_changes(self):
         """
-        Collects changes made to the object by iterating over instance
-        attribute 'fields'.
+        Recueille les modifications apportées à l'objet en itérant sur
+        l'attribut d'instance 'fields'.
 
-        This method constructs the content of the table by iterating through
-        each field
-        listed in the 'fields' attribute. For each field, it checks if the
-        field exists within the 'object' attribute. If the field has a
-        corresponding
-        display method (e.g., `get_field_display()`), it uses that method to
-        retrieve
-        the display value; otherwise, it retrieves the raw value of the field.
-        Field names are formatted to replace underscores with spaces and
-        capitalized
-        for presentation. The resulting key-value pairs are appended to the
-        'update_table' attribute.
+        Cette méthode construit le contenu de la table en itérant à travers
+        chaque champ répertorié dans l'attribut 'fields'. Pour chaque champ,
+        elle vérifie si le champ existe dans l'attribut 'object'. Si le champ
+        a une méthode d'affichage correspondante (par exemple,
+        `get_field_display()`), elle utilise cette méthode pour récupérer la
+        valeur d'affichage ; sinon, elle récupère la valeur brute du champ.
+        Les noms de champ sont formatés pour remplacer les tirets bas par des
+        espaces et sont capitalisés pour la présentation. Les paires
+        clé-valeur résultantes sont ajoutées à l'attribut 'update_table'.
 
-        Notes:
-            This method assumes that the 'fields' attribute contains a list
-            of strings representing the names of fields to be displayed, and
-            that the
-            'object' attribute contains an instance of a model with the
-            corresponding fields.
+        Notes :
+            Cette méthode suppose que l'attribut 'fields' contient une liste
+            de chaînes représentant les noms des champs à afficher, et que
+            l'attribut 'object' contient une instance d'un modèle avec les
+            champs correspondants.
         """
         for field in self.fields:
             if hasattr(self.object, field):
                 field_item = getattr(self.object, field)
 
-                # Check if the field has choices and get the display value if
-                # available
+                # Vérifiez si le champ a des choix et obtenez la valeur
+                # d'affichage si disponible.
                 if hasattr(self.object, f"get_{field}_display"):
                     field_item = getattr(self.object, f"get_{field}_display")()
 
@@ -486,171 +489,172 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
     # METHODS FOR ACTION: LIST_FILTER and LIST:
     def get_queryset(self):
         """
-        Requests the queryset of a model.
+        Demande le queryset d'un modèle.
 
-        Returns:
-            queryset: Returns the requested queryset.
+        Returns :
+            queryset : Renvoie le queryset demandé.
         """
         pass
 
     def get_user_queryset(self):
         """
-        Requests the queryset of a model for a specific 'self.user'.
+        Demande le queryset d'un modèle pour un 'self.user' spécifique.
 
-        Returns:
-            queryset: Returns the requested queryset.
+        Returns :
+            queryset : Renvoie le queryset demandé.
         """
         return None
 
     def user_choice(self, choice):
         """
-        Asks the user to make a choice.
+        Demande à l'utilisateur de faire un choix.
 
-        Args:
-             choice (dict): Contains the user's input from 'get_data' function.
+        Args :
+            choice (dict) : Contient l'entrée de l'utilisateur de la fonction
+            'get_data'.
         """
         pass
 
     def request_field_selection(self):
         """
-        Prompts the user to choose the model attributes to make a filter.
+        Demande à l'utilisateur de choisir les attributs du modèle pour
+        effectuer un filtre.
 
-        Returns:
-            list: The list contains the choices of the user.
+        Returns :
+            list : La liste contient les choix de l'utilisateur.
         """
         return None, None
 
     def choose_attributes(self):
         """
-        Generates a table with a list of model attributes/fields that can be
-        used for filtering.
+        Génère un tableau avec une liste d'attributs/champs de modèle pouvant
+        être utilisés pour le filtrage.
 
-        This method prepares a list of fields that the user can choose from
-        when filtering data.
-        It formats each field by replacing underscores with spaces and
-        capitalizing the first
-        letter. The formatted fields are then added to a table using the
-        `create_pretty_table`
-        function.
+        Cette méthode prépare une liste de champs parmi lesquels l'utilisateur
+        peut choisir lors du filtrage des données. Elle formate chaque champ
+        en remplaçant les underscores par des espaces et en mettant la
+        première lettre en majuscule. Les champs formatés sont ensuite ajoutés
+        à un tableau à l'aide de la fonction `create_pretty_table`.
 
-        The table is displayed to the user with the prompt "Which fields you
-        want to filter?".
+        Le tableau est affiché à l'utilisateur avec la question "Quels champs
+        souhaitez-vous filtrer ?".
 
-        The `fields` attribute of the instance is set to the list of fields
-        that are to be
-        displayed in the table.
+        L'attribut `fields` de l'instance est défini sur la liste des champs
+        qui doivent être affichés dans le tableau.
         """
         pass
 
     def filter_selected_fields(self, selected_fields, order, user_queryset):
         """
-        Filters and orders a queryset based on user-selected fields and order
-        preference.
+        Filtre et ordonne une queryset en fonction des champs sélectionnés par
+        l'utilisateur et de ses préférences d'ordre.
 
-        This method takes a list of selected fields, an order preference, and
-        a queryset of users.
-        It maps the selected fields to their corresponding database fields
-        using a predefined
-        mapping. The queryset is then ordered by the selected fields in the
-        specified order
-        (ascending or descending).
+        Cette méthode prend une liste de champs sélectionnés, une préférence
+        d'ordre et une queryset d'utilisateurs. Elle mappe les champs
+        sélectionnés à leurs champs de base de données correspondants en
+        utilisant un mapping prédéfini. Ensuite, la queryset est ordonnée par
+        les champs sélectionnés dans l'ordre spécifié
+        (ascendant ou descendant).
 
-        Args:
-            selected_fields (list): A list of selected fields represented by
-            single-letter codes.
-            order (str): The order in which to sort the queryset, either 'A'
-            for ascending or 'D'
-                for descending.
-            user_queryset (QuerySet): The queryset of users to be filtered and
-            ordered.
+        Args :
+            - selected_fields (list) : Une liste de champs sélectionnés
+            représentés par des codes d'une seule lettre.
+            - order (str) : L'ordre dans lequel trier la queryset, soit 'A'
+            pour ascendant, soit 'D' pour descendant.
+            - user_queryset (QuerySet) : La queryset des utilisateurs à
+            filtrer et à ordonner.
 
-        Returns:
-            tuple: A tuple containing the filtered and ordered queryset
-            ('filtered_queryset')and
-                the list of fields used for ordering ('order').
+        Returns :
+            - tuple : Un tuple contenant la queryset filtrée et ordonnée
+            ('filtered_queryset') et la liste des champs utilisés pour
+            l'ordonnancement ('order').
 
-        Raises:
-            KeyError: If any of the selected fields are not found in the field
-            mapping.
+        Raises :
+            - KeyError : Si l'un des champs sélectionnés n'est pas trouvé dans
+            le mapping des champs.
         """
         return None, None
 
     def display_result(self, filter_queryset, order_by_fields):
         """
-        Displays a formatted table of client data based on the filtered
-        queryset.
+        Affiche un tableau formaté des données client basé sur la queryset
+        filtrée.
 
-        This method constructs a dictionary of client data with each client's
-        details keyed by their ID. It then uses the `create_queryset_table`
-        function
-        to display the data in a table format, with the option to order the
-        data
-        based on the fields specified in `order_by_fields`.
+        Cette méthode construit un dictionnaire des données client avec les
+        détails de chaque client indexés par leur ID. Ensuite, elle utilise la
+        fonction `create_queryset_table` pour afficher les données sous forme
+        de tableau, avec l'option de trier les données en fonction des champs
+        spécifiés dans `order_by_fields`.
 
-        Args:
-            filter_queryset (QuerySet): A queryset of filtered client data.
-            order_by_fields (list): A list of fields by which the data should
-            be ordered.
+        Args :
+            - filter_queryset (QuerySet) : Une queryset des données client
+            filtrées.
+            - order_by_fields (list) : Une liste de champs par lesquels les
+            données doivent être triées.
 
-        Returns:
-            None: The function does not return a value; it displays the table
-            directly.
+        Returns :
+            - None : La fonction ne retourne pas de valeur ; elle affiche
+            directement le tableau.
         """
         pass
 
     # METHODS FOR ACTIONS: CREATE AND UPDATE:
     def create_table(self):
         """
-        Creates a table with help of library: 'tabulate'. It takes the
-        instance attribute
-        'update_table' to create the table, 'cli/utils_tables.py'.
+        Crée un tableau à l'aide de la bibliothèque 'tabulate'. Il utilise
+        l'attribut d'instance 'update_table' pour créer le tableau,
+        'cli/utils_tables.py'.
         """
         create_pretty_table(self.update_table)
 
     # METHODS FOR ACTION: UPDATE AND DELETE:
     def get_requested_model(self):
         """
-        Prompt the user for the email or other required details to find the
-        corresponding model.
-        Displays a or several table(s) with help of 'cli/utils_table.py'.
+        Demander à l'utilisateur l'e-mail ou d'autres détails requis pour
+        trouver le modèle correspondant.
+        Affiche un ou plusieurs tableaux à l'aide de 'cli/utils_table.py'.
         """
         pass
 
     # METHODS FOR ACTION: UPDATE:
     def get_fields_to_update(self):
         """
-        Uses the 'multiple_choice_str_input' to retrieve the user's input.
-        These choices will be
-        transmitted to the 'get_data' method to call the necessary inputs.
-        And sets the instance
-        attribute 'field_to_update'.
+        Utilise 'multiple_choice_str_input' pour récupérer l'entrée de
+        l'utilisateur.
+        Ces choix seront transmis à la méthode 'get_data' pour appeler les
+        saisies nécessaires.
+        Et définit l'attribut d'instance 'field_to_update'.
 
-        Returns:
-            list: Contains a list of the option(s) which the user entered.
+        Retourne :
+            list : Contient une liste de l'option(s) que l'utilisateur a
+            saisie.
         """
         return self.fields_to_update
 
     def get_available_fields(self):
         """
-        Sets the instance attribute 'available_fields'.
+        Définit l'attribut d'instance 'available_fields'.
 
-        Returns:
-            dict: Contains the 'method', 'params' and 'label' to display in
-            'get_data' the
-            necessary input-types.
+        Returns :
+            dict : Contient la 'méthode', les 'params' et le 'label' à
+            afficher dans 'get_data' les types de saisie nécessaires.
         """
         pass
 
     # METHODS FOR HANDLE:
     def list(self):
-        """Methods when action='LIST' in the child Command."""
+        """
+        Méthodes lorsque action='LIST' dans la commande enfant.
+        """
         self.get_queryset()
         self.get_instance_data()
         self.go_back()
         sys.exit()
 
     def list_filter(self):
-        """Methods when action='LIST_FILTER' in the child Command."""
+        """
+        Méthodes lorsque action='LIST_FILTER' dans la commande enfant.
+        """
         self.get_queryset()
         if not self.queryset:
             create_info_message("No data available!")
@@ -671,7 +675,9 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
             sys.exit()
 
     def create(self):
-        """Methods when action='CREATE' in the child Command."""
+        """
+        Méthodes lorsque l'action est 'CREATE' dans la commande enfant.
+        """
         self.get_queryset()
         self.get_instance_data()
         validated_data = self.get_data()
@@ -682,7 +688,9 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
         sys.exit()
 
     def update(self):
-        """Methods when action='UPDATE' in the child Command."""
+        """
+        Méthodes lorsque l'action est 'UPDATE' dans la commande enfant.
+        """
         self.get_queryset()
         if not self.queryset:
             create_info_message("No data available!")
@@ -700,7 +708,9 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
         sys.exit()
 
     def delete(self):
-        """Methods when action='DELETE' in the child Command."""
+        """
+        Méthodes lorsque l'action est 'DELETE' dans la commande enfant.
+        """
         self.get_queryset()
         self.get_instance_data()
         self.get_requested_model()
@@ -712,16 +722,18 @@ class EpicEventsCommand(JWTTokenMixin, BaseCommand):
 
     def handle(self, *args, **options):
         """
-        Handles the execution of the custom command based on the action
-        specified.
+        Gère l'exécution de la commande personnalisée en fonction de l'action
+        spécifiée.
 
-        This method first calls the parent class's handle method to perform any
-        necessary setup. Then it checks if the current user has the required
-        permissions for the specified action. If the user lacks the necessary
-        permissions, a permission denied message is displayed and the 'start'
-        command is called. If the user has the correct permissions, the method
-        dispatches to the appropriate method based on the action: LIST, CREATE,
-        UPDATE, or DELETE.
+        Cette méthode appelle d'abord la méthode de gestion de la classe
+        parent pour effectuer toute configuration nécessaire. Ensuite, elle
+        vérifie si l'utilisateur actuel dispose des autorisations requises
+        pour l'action spécifiée. Si l'utilisateur ne dispose pas des
+        autorisations nécessaires, un message de refus d'autorisation est
+        affiché et la commande 'start' est appelée. Si l'utilisateur dispose
+        des autorisations correctes, la méthode est dirigée vers la méthode
+        appropriée en fonction de l'action : LISTE, CRÉATION, MISE À JOUR ou
+        SUPPRESSION.
         """
         super().handle(*args, **options)
 

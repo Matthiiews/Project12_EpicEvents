@@ -12,13 +12,49 @@ from contracts.models import Contract
 
 class Command(EpicEventsCommand):
     """
-    This class `Command` is a subclass of `EpicEventsCommand` designed for
-    updating contract details within a system. It is specifically tailored for
-    users with "SA" and "MA" permissions, indicating that it is intended for
-    sales and management.
+    Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
+    pour mettre à jour les détails des contrats dans un système. Elle est
+    spécifiquement adaptée aux utilisateurs ayant les permissions "SA" (ventes)
+    et "MA" (management), ce qui indique qu'elle est destinée aux ventes et à
+    la gestion.
+
+    - `help` : Une chaîne décrivant le but de la commande, qui consiste à
+    demander les détails nécessaires pour mettre à jour un contrat.
+    - `action` : Une chaîne indiquant l'action associée à cette commande,
+    définie sur "UPDATE".
+    - `permissions` : Une liste de rôles autorisés à exécuter cette commande,
+    dans ce cas, seuls "SA" (Ventes) et "MA" (Management) ont la permission.
+
+    Les méthodes clés de cette classe comprennent :
+
+    - `get_queryset` : Initialise le queryset pour les objets `Contrat`,
+    sélectionnant les objets `Client` associés pour chaque contrat.
+    - `get_create_model_table` : Génère une table de tous les contrats pour
+    aider l'utilisateur à sélectionner un contrat à mettre à jour.
+    - `get_requested_model` : Invite l'utilisateur à saisir l'adresse e-mail
+    du client dont ils souhaitent mettre à jour le contrat et affiche les
+    détails du contrat pour confirmation.
+    - `get_fields_to_update` : Invite l'utilisateur à sélectionner les champs
+    qu'ils souhaitent mettre à jour.
+    - `get_available_fields` : Associe les champs sélectionnés à leurs
+    méthodes de saisie correspondantes pour la collecte des données.
+    - `get_data` : Collecte les nouvelles données pour les champs sélectionnés
+    auprès de l'utilisateur.
+    - `make_changes` : Met à jour le contrat avec les nouvelles données.
+    - `collect_changes` : Confirme la mise à jour du contrat et affiche un
+    message de succès.
+    - `go_back` : Fournit une option pour revenir à la commande précédente,
+    vraisemblablement à l'interface principale de gestion des contrats.
+
+    Cette classe encapsule la fonctionnalité de mise à jour des détails des
+    contrats, en veillant à ce que seuls les utilisateurs ayant les
+    permissions appropriées puissent effectuer cette action. Elle utilise la
+    classe `EpicEventsCommand` pour les fonctionnalités de commande courantes,
+    telles que l'affichage des invites de saisie et la gestion de la saisie
+    utilisateur.
     """
 
-    help = "Prompts for details to update a contract."
+    help = "Demande les détails nécessaires pour mettre à jour un contrat."
     action = "UPDATE"
     permissions = ["MA"]
 
@@ -125,7 +161,7 @@ class Command(EpicEventsCommand):
 
         Contract.objects.filter(client=self.object.client).update(**data)
 
-        # Refresh the object from the database
+        # Actualise l'objet depuis la base de données.
         self.object.refresh_from_db()
 
         return self.object
