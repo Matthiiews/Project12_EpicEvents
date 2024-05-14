@@ -98,20 +98,20 @@ Après vous être connecté avec votre email et votre mot de passe, vous serez r
 ![start](/IMG/EpicEvents_start.PNG)
 
 Chaque employé, quel que soit son rôle, peut lister tous les employés, tous les clients, tous les contrats et tous les événements. Cette liste apparaît en lecture seule.
-![list](/IMG/EpicEvents_listEmployees.png)
+![list](/IMG/EpicEvents_listEmployees.PNG)
 
 Comme décrit, chaque employé peut lister tout, mais certains peuvent filtrer davantage. Après l'énumération du modèle, une saisie apparaît pour demander si cet employé souhaite filtrer. Si l'employé choisit 'oui' et a la permission de filtrer, l'employé peut filtrer le modèle.
-![list_filter](/IMG/EpicEvents_listContracts.png)
+![list_filter](/IMG/EpicEvents_listContracts.PNG)
 
 Après avoir choisi de filtrer et obtenu l'autorisation, l'employé peut choisir un ou plusieurs attributs du modèle pour filtrer les événements.
-![filter](/IMG/EpicEvents_filterEvents.png)
+![filter](/IMG/EpicEvents_filterEvents.PNG)
 
 Cette image illustre la création d'un client.
-![create](/IMG/EpicEvents_createClient.png)
+![create](/IMG/EpicEvents_createClient.PNG)
 
 Pour mettre à jour une instance de modèle, une petite table affiche tous les détails de l'instance du modèle. L'employé peut choisir, d'un à plusieurs, les champs qu'il souhaite mettre à jour.
 Les données mises à jour seront affichées immédiatement après la mise à jour de l'instance du modèle.
-![update](/IMG/EpicEvents_updateContract.png)
+![update](/IMG/EpicEvents_updateContract.PNG)
 
 Pour démontrer la création de données :
-![data](/IMG/EpicEvents_data_creation.png)
+![data](/IMG/EpicEvents_data_creation.PNG)
