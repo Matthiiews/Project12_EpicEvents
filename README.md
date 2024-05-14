@@ -86,7 +86,7 @@ Les commandes pour créer toutes ces données sont situées dans `data/managemen
 
 réalisé avec [Visitez](https://dbdiagram.io)
 
-![diagram](/README_images/EpicEvents_modelDiagramm.png)
+![diagram](/IMG/EpicEvents_ERD.png)
 
 ## Skill
 

@@ -171,7 +171,9 @@ def get_app_menu(app, user):
     """
     choices_by_role_and_app = {
         "SA": {
-            "employee": {1: "List", 2: ["quit", "Go back to Main Menu"]},
+            "employee": {
+                1: "List",
+                2: ["quit", "Go back to Main Menu"]},
             "client": {
                 1: "List and filter",
                 2: "Create",
