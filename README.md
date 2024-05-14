@@ -95,7 +95,7 @@ réalisé avec [Visitez](https://dbdiagram.io)
 ## Visualisation
 
 Après vous être connecté avec votre email et votre mot de passe, vous serez redirigé vers la commande : `python manage.py start`, et vous choisirez à partir d'un menu ce que vous souhaitez faire.:
-![start](/IMG/EpicEvents_start.png)
+![start](/IMG/EpicEvents_start.PNG)
 
 Chaque employé, quel que soit son rôle, peut lister tous les employés, tous les clients, tous les contrats et tous les événements. Cette liste apparaît en lecture seule.
 ![list](/IMG/EpicEvents_listEmployees.png)
