@@ -238,11 +238,10 @@ def get_app_menu(app, user):
             },  # Peut filtrer les employés, créer une logique de filtre à
             # l'intérieur de la Liste.
             "client": {
-                1: "List and filter",
-                2: "Delete",
-                3: ["quit", "Go back to Main Menu"],
-                4: ["Logout", "logout"],
-                5: ["quit", "Quit program"]
+                1: "List",
+                2: ["quit", "Go back to Main Menu"],
+                3: ["Logout", "logout"],
+                4: ["quit", "Quit program"]
             },
             "contract": {
                 1: "List and filter",
@@ -257,10 +256,9 @@ def get_app_menu(app, user):
             "event": {
                 1: "List and filter",
                 2: "Update",
-                3: "Delete",
-                4: ["quit", "Go back to Main Menu"],
-                5: ["Logout", "logout"],
-                6: ["quit", "Quit program"]
+                3: ["quit", "Go back to Main Menu"],
+                4: ["Logout", "logout"],
+                5: ["quit", "Quit program"]
             },
         },
     }

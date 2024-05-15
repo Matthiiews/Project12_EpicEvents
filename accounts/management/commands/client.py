@@ -85,14 +85,12 @@ class Command(EpicEventsCommand):
             if choice == 1:
                 call_command("client_list_filter")
             elif choice == 2:
-                call_command("client_delete")
-            elif choice == 3:
                 call_command("start")
-            elif choice == 4:
+            elif choice == 3:
                 self.logout()
                 create_info_message("Login out")
                 call_command("start")
                 return
-            elif choice == 5:
+            elif choice == 4:
                 create_info_message("Living app")
                 return
