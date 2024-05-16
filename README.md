@@ -23,14 +23,6 @@
   </a>
 </p>
 
-<p align="center">
-    <a href="https://coverage.readthedocs.io/en/6.4.4/">
-    <img src="https://img.shields.io/badge/coverage-98%25-brightgreen" alt="coverage-badge">
-  </a>
-</p>
-
-# Epic Events
-
 ## Description
 
 Projet 12 du parcours OpenClassrooms - Epic Events -- développer une architecture back-end sécurisée avec Python et SQL
@@ -112,6 +104,3 @@ Cette image illustre la création d'un client.
 Pour mettre à jour une instance de modèle, une petite table affiche tous les détails de l'instance du modèle. L'employé peut choisir, d'un à plusieurs, les champs qu'il souhaite mettre à jour.
 Les données mises à jour seront affichées immédiatement après la mise à jour de l'instance du modèle.
 ![update](/IMG/EpicEvents_updateContract.PNG)
-
-Pour démontrer la création de données :
-![data](/IMG/EpicEvents_data_creation.PNG)
