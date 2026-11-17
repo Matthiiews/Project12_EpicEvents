@@ -1,6 +1,9 @@
+import os
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from django.db import IntegrityError
+
+from django.core.exceptions import ValidationError
 
 UserModel = get_user_model()
 
@@ -33,10 +36,14 @@ class Command(BaseCommand):
     help = "Cette commande crée un superutilisateur."
 
     def handle(self, *args, **options):
+        password = os.environ.get("DJANGO_SUPERUSER_PASSWORD",
+                                  "Admin.EpicEvents24")
         try:
-            UserModel.objects.create_superuser("admin@mail.com", "admin")
+            UserModel.objects.create_superuser("admin@mail.com", password)
         except IntegrityError:
             self.stdout.write(self.style.WARNING("Exists already!"))
+        except ValidationError as error:
+            self.stdout.write(self.style.ERROR(" ".join(error.messages)))
         else:
             self.stdout.write(
                 self.style.SUCCESS("Superuser successfully created!"))

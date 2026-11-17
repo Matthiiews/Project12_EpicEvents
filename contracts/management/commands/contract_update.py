@@ -159,7 +159,7 @@ class Command(EpicEventsCommand):
             contract.employee = employee
             contract.save()
 
-        Contract.objects.filter(client=self.object.client).update(**data)
+        self.queryset.filter(pk=self.object.client).update(**data)
 
         # Actualise l'objet depuis la base de données.
         self.object.refresh_from_db()

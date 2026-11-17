@@ -77,7 +77,7 @@ class Command(EpicEventsCommand):
             self.display_input_title("Enter details:")
 
             email = self.email_input("Email address")
-            self.object = Client.objects.filter(email=email).first()
+            self.object = self.queryset.filter(email=email).first()
 
             if self.object:
                 break
@@ -145,7 +145,7 @@ class Command(EpicEventsCommand):
         return data
 
     def make_changes(self, data):
-        Client.objects.filter(email=self.object.email).update(**data)
+        self.queryset.filter(pk=self.object.pk).update(**data)
 
         self.object.refresh_from_db()
 

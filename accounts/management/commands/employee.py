@@ -42,24 +42,12 @@ class Command(EpicEventsCommand):
     """
 
     help = "Menu pour toutes les opérations liées aux employés."
-    permissions = ["SA", "SU", "MA"]
+    permissions = ["MA"]
 
     def handle(self, *args, **options):
         super().handle(*args, **options)
 
         choice = get_app_menu("employee", self.user)
-
-        if self.user.employee_users.role == "SA":
-            if choice == 1:
-                call_command("employee_list")
-            elif choice == 2:
-                call_command("start")
-
-        if self.user.employee_users.role == "SU":
-            if choice == 1:
-                call_command("employee_list")
-            elif choice == 2:
-                call_command("start")
 
         if self.user.employee_users.role == "MA":
             if choice == 1:

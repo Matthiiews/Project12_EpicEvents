@@ -136,7 +136,7 @@ class Command(EpicEventsCommand):
         }
 
         order_by_fields = [
-            f"{'_' if order == 'D' else ''}{field_mapping[field]}"
+            f"{'-' if order == 'D' else ''}{field_mapping[field]}"
             for field in selected_fields
         ]
 

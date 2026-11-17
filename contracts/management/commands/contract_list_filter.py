@@ -91,7 +91,7 @@ class Command(EpicEventsCommand):
         self.display_input_title("Enter choice:")
 
         return {"filter": self.choice_str_input(
-            ("Y", "N"), "Do you want ti filter your clients? [Y]es or [N]o")}
+            ("Y", "N"), "Do you want to filter your contracts? [Y]es or [N]o")}
 
     def user_choice(self, choice):
         if choice["filter"] == "Y" and self.user.employee_users.role in ["SA", "MA"]:
@@ -144,7 +144,7 @@ class Command(EpicEventsCommand):
             }
 
         order_by_fields = [
-            f"{'_' if order == 'D' else ''}{field_mapping[field]}"
+            f"{'-' if order == 'D' else ''}{field_mapping[field]}"
             for field in selected_fields]
 
         filter_queryset = user_queryset.order_by(*order_by_fields)
@@ -160,9 +160,9 @@ class Command(EpicEventsCommand):
         for contract in filter_queryset:
             client_data = {
                 "client": contract.client.email,
-                "total_amount": contract.total_costs,
-                "amount_paid": contract.amount_paid,
-                "state": contract.state,
+                "total_amount": contract.total,
+                "amount_paid": contract.paid_amount,
+                "state": contract.get_state_display(),
             }
             table_data[f"Contract {contract.id}"] = client_data
 

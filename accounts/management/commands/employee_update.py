@@ -167,7 +167,7 @@ class Command(EpicEventsCommand):
                 user.email = email
                 user.save()
 
-        Employee.objects.filter(user=self.object.user).update(**data)
+        self.queryset.filter(pk=self.object.pk).update(**data)
 
         # Rafraîchir l'objet à partir de la base de données
         self.object.refresh_from_db()

@@ -71,6 +71,7 @@ class Command(EpicEventsCommand):
     def get_instance_data(self):
         super().get_instance_data()
         table_data = dict()
+        is_manager = self.user.employee_users.role == "MA"
 
         for event in self.queryset:
             event_data = {
@@ -79,24 +80,29 @@ class Command(EpicEventsCommand):
                 "name": event.name,
                 "location": event.location,
                 "max_guests": event.max_guests,
-                "employee":
-                    f"{event.employee.get_full_name} ({event.employee.role})",
             }
+
+            if is_manager:
+                event_data["employee"] = (
+                  f"{event.employee.get_full_name} "
+                  f"({event.employee.role})"
+                )
+
             table_data[f"Event {event.id}"] = event_data
 
-        if self.user.employee_users.role == "MA":
-            create_queryset_table(
-                table_data, "my Events", headers=self.headers["event"])
-        else:
-            create_queryset_table(
-                table_data, "my Events", headers=self.headers["event"][0:6])
+        headers = (self.headers["event"] if is_manager
+                   else self.headers["event"][0:6]
+                   )
+        create_queryset_table(
+                table_data, "my Events", headers=headers
+                )
 
     def get_requested_model(self):
         while True:
             self.display_input_title("Enter details:")
 
             email = self.email_input("Email address of client")
-            self.object = Event.objects.filter(
+            self.object = self.queryset.filter(
                 contract__client__email=email).first()
             if self.object:
                 break
@@ -111,7 +117,7 @@ class Command(EpicEventsCommand):
             ["[N]ame: ", self.object.name],
             ["[L]ocation: ", self.object.location],
             ["number of [G]uests: ", self.object.max_guests],
-            ["[No]otes: ", self.object.notes],
+            ["N[O]tes: ", self.object.notes],
         ]
         create_pretty_table(event_table, "Details of the Event: ")
 
@@ -119,8 +125,8 @@ class Command(EpicEventsCommand):
         self.display_input_title("Enter choice:")
 
         self.fields_to_update = self.multiple_choice_str_input(
-            ("E", "D", "N", "L", "G", "No"),
-            "Your choice ? [E, D, N, L, G, No]")
+            ("E", "D", "N", "L", "G", "O"),
+            "Your choice ? [E, D, N, L, G, O]")
 
     def get_available_fields(self):
         self.available_fields = {
@@ -149,7 +155,7 @@ class Command(EpicEventsCommand):
                 "params": {"label": "Number of guest"},
                 "label": "max_guests",
             },
-            "No": {
+            "O": {
                 "method": self.text_input,
                 "params": {"label": "Notes of the event"},
                 "label": "notes",
@@ -181,8 +187,7 @@ class Command(EpicEventsCommand):
             event.employee = employee
             event.save()
 
-        Event.objects.filter(
-            contract__client=self.object.contract.client).update(**data)
+        self.queryset.filter(pk=self.object.pk).update(**data)
 
         # Actualise l'objet depuis la base de données.
         self.object.refresh_from_db()
@@ -192,7 +197,7 @@ class Command(EpicEventsCommand):
     def collect_changes(self):
         self.fields = ["name", "location", "max_guests", "notes"]
 
-        create_success_message("Event", "created")
+        create_success_message("Event", "updated")
 
         self.update_table.append(
             [f"Client: ", self.object.contract.client.email])

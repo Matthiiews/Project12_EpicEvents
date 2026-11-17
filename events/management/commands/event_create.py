@@ -108,7 +108,12 @@ class Command(EpicEventsCommand):
         employee = Employee.objects.filter(
             user__email=data["employee"]).first()
         contract = Contract.objects.filter(
-            client__email=data["client"]).first()
+            client__email=data["client"], state=Contract.SIGNED).first()
+        
+        if not contract:
+            create_does_not_exists_message("Signed contract")
+            call_command("event_create")
+            sys.exit()
 
         if not client:
             create_does_not_exists_message("Client")
@@ -149,11 +154,11 @@ class Command(EpicEventsCommand):
         create_success_message("Event", "created")
 
         self.update_table.append(
-            [f"Client: ", self.object.contract.client.email])
+            ["Client: ", self.object.contract.client.email])
         self.update_table.append(
-            [f"Employee: ", self.object.employee.user.email])
+            ["Employee: ", self.object.employee.user.email])
         self.update_table.append(
-            [f"Date: ", self.object.date.strptime("%d/%m/%Y")])
+            ["Date: ", self.object.date.strftime("%d/%m/%Y")])
         super().collect_changes()
 
     def go_back(self):

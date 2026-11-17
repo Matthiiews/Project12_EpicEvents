@@ -92,7 +92,7 @@ class Command(EpicEventsCommand):
         self.display_input_title("Enter choice:")
 
         return {"filter": self.choice_str_input(
-            ("Y", "N"), "Do you want to filter your clients? [Y]es or [N]o")}
+            ("Y", "N"), "Do you want to filter your events? [Y]es or [N]o")}
 
     def user_choice(self, choice):
         if choice["filter"] == "Y" and self.user.employee_users.role == "SU":

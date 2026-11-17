@@ -39,16 +39,17 @@ class UserManager(BaseUserManager):
         donné.
         """
         if not email:
-            raise ValueError(_("The Email must bet set"))
+            raise ValueError(_("The Email must be set"))
         if not password:
             raise ValueError(_("The Password must be set"))
 
-        password = validate_password(password)
-
         email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
+
+        validate_password(password, user=user)
+
         user.set_password(password)
-        user.save()
+        user.save(using=self._db)
         return user
 
     def create_superuser(self, email, password, **extra_fields):

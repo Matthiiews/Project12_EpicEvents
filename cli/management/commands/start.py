@@ -46,7 +46,7 @@ class Command(EpicEventsCommand):
 
         if choice == 1:
             if self.user.employee_users.role in ["SA", "SU"]:
-                create_permission_denied_message
+                create_permission_denied_message()
                 call_command("start")
             elif self.user.employee_users.role == "MA":
                 call_command("employee")

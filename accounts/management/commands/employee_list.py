@@ -10,7 +10,7 @@ class Command(EpicEventsCommand):
     """
     Cette classe `Command` est une sous-classe de `EpicEventsCommand` conçue
     pour répertorier tous les employés du système. Elle est accessible aux
-    utilisateurs disposant des permissions "SA" (Ventes), "SU" (Support) ou
+    utilisateurs disposant des permissions,
     "MA" (Management).
 
     - `help` : Une chaîne décrivant l'objectif de la commande, qui est de
@@ -39,7 +39,7 @@ class Command(EpicEventsCommand):
 
     help = "Répertorie tous les employés."
     action = "LIST"
-    permissions = ["SA", "SU", "MA"]
+    permissions = ["MA"]
 
     def get_queryset(self):
         self.queryset = (Employee.objects.select_related("user")

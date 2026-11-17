@@ -54,7 +54,7 @@ def create_does_not_exists_message(text):
     """
     print()
     style_text_display(
-        f"{'':^2} {text} does not exists !", color=RED, bold=True)
+        f"{'':^2} {text} does not exist !", color=RED, bold=True)
     print()
 
 

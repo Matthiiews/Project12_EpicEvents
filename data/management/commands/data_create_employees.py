@@ -11,6 +11,7 @@ from cli.utils_messages import create_error_message, create_success_message
 
 UserModel = get_user_model()
 fake = Faker()
+Faker.seed(0)
 
 
 class Command(DataCreateCommand):
@@ -90,5 +91,8 @@ class Command(DataCreateCommand):
         except IntegrityError:
             create_error_message("There are employees wich")
         else:
-            self.stdout.write(data[1]["email"])
+            for role in ("SA", "SU", "MA"):
+                email = next(v["email"] for v in data.values()
+                             if v["role"] == role)
+                self.stdout.write(f"  {role}: {email} / TestPassword!")
             create_success_message("Users and Employees", "created")
