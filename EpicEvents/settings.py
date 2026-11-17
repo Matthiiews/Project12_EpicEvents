@@ -14,6 +14,7 @@ import sentry_sdk
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,10 +26,10 @@ JWT_PATH = "cli/token.txt"
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-u9)pkel%c#8gs+gn&k4$hake_uddsaij&d)57=yan4!-jo@-jw"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config("DEBUG", default=False, cast=bool)
 
 ALLOWED_HOSTS = []
 
@@ -85,14 +86,15 @@ WSGI_APPLICATION = "EpicEvents.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "EPIC_EVENTS",
-        "USER": "postgres",
-        "PASSWORD": "Sirmattheo24*",
-        "HOST": "localhost",
-        "PORT": "5432",
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST", default="localhost"),
+        "PORT": config("DB_PORT", default="5432"),
     }
 }
 
@@ -147,7 +149,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # Settings for Sentry
 sentry_sdk.init(
-    dsn="https://baeda0cffee989539feeb6bbdf9d9373@o4506979700834304.ingest.us.sentry.io/4507217221582848",
+    dsn=config("SENTRY_DSN", default=""),
+
+
     integrations=[DjangoIntegration()],
     # Set traces_sample_rate to 1.0 to capture 100%
     # of transactions for performance monitoring.

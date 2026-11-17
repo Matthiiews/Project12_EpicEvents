@@ -6,6 +6,8 @@ import datetime
 
 import os
 
+from decouple import config
+
 from cli.utils_messages import (create_token_error_message,
                                 create_does_not_exists_message,
                                 create_invalid_error_message,
@@ -15,7 +17,7 @@ from cli.utils_messages import (create_token_error_message,
 
 UserModel = get_user_model()
 
-TOKEN_SECRET_KEY = "R2uKxYV6He92ocDkDDg6bdWvpceGrI2i"
+TOKEN_SECRET_KEY = config("TOKEN_SECRET_KEY")
 
 
 class JWTTokenMixin:
@@ -226,10 +228,16 @@ class JWTTokenMixin:
             user = authenticate(email=email, password=data["password"])
 
             if user is not None:
+                employee = getattr(user, "employee_users", None)
+
+                if employee is None:
+                    create_does_not_exists_message("Employee")
+                    return
+
                 self.token = self.generate_token(user.pk, user.email)
 
                 create_success_message(
-                    f"Employee [Role: {user.employee_users.role}]", "logged in"
+                    f"Employee [Role: {employee.role}]", "logged in"
                 )
             else:
                 create_invalid_error_message("email or password")

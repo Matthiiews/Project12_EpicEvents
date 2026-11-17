@@ -27,3 +27,9 @@ settings-local.py
 
 # Database
 db.sqlite3
+
+# Jeton d'authentification local
+cli/token.txt
+
+# Configuration d'éditeur
+.vscode/
